@@ -109,6 +109,12 @@ def plot_citation_distribution(tag):
 	for citnum in sorted(value_counter.keys(),key=lambda x:int(x)):
 
 		xs.append(int(citnum))
+
+		if citnum<0:
+			print(citnum)
+
+		if value_counter[citnum]<0:
+			print(value_counter[citnum])
 		ys.append(value_counter[citnum])
 
 	ys = np.array(ys)/np.sum(ys)
