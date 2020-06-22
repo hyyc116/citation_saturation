@@ -94,8 +94,7 @@ def plot_citation_distribution(tag):
 
 	paper_citnum = json.loads(open('data/pid_citnum_{}.json'.format(tag)).read())
 
-
-	top100papers  = sorted(paper_citnum.keys(),keys=lambda x:int(paper_citnum[x]),reverse=True)[:100]
+	top100papers  = sorted(paper_citnum.keys(),key=lambda x:int(paper_citnum[x]),reverse=True)[:100]
 
 	open('data/top_100ids_{}.txt'.format(tag),'w').write('\n'.join(top100papers))
 
