@@ -39,7 +39,8 @@ def select_papers_by_subject(subjName,tag):
     logging.info('data saved to {}.'.format(path))
 
 
-def GetCitRelationsInsubj(subjName,tag):
+
+def GetCitRelationsInsubj(tag):
 
     path = 'data/paper_ids_{}.txt'.format(tag)
 
@@ -133,8 +134,82 @@ def plot_citation_distribution(tag):
 	logging.info('fig saved to fig/citation_distribution_{}.png'.format(tag))
 
 
+def sampling_subdataset(paper_ids,N):
+    return set(np.random.choice(paper_ids,N,replace=False))
+
+def citation_relation_of_subdataset(tag,N,paper_ids):
+
+    path = 'data/pid_cits_{}.txt'.format(tag)
+
+    pid_citnum = defaultdict(int)
+    progress = 0
+    for line in open(path):
+
+        progress+=1
+
+        if progress%100000==0:
+            logging.info('reading %d citation relations....' % progress)
+
+        line = line.strip()
+
+        pid,citing_id = line.split("\t")
+
+        if pid in paper_ids and citing_id in paper_ids:
+
+            pid_citnum[pid]+=1
+
+    open('data/pid_citnum_{}_{}.json'.format(tag,N),'w').write(json.dumps(pid_citnum))
+
+    ## plot citation distribution 
+    value_counter = Counter(pid_citnum.values())
+	xs = []
+	ys = []
+	for citnum in sorted(value_counter.keys(),key=lambda x:int(x)):
+
+		xs.append(int(citnum))
+
+		ys.append(value_counter[citnum])
+
+	ys = np.array(ys)/float(np.sum(ys))
+
+	plt.figure(figsize=(5,4))
+
+	plt.plot(xs,ys,'o',fillstyle='none')
+
+
+	plt.xscale('log')
+	plt.yscale('log')
+
+	plt.xlabel('number of citations')
+
+	plt.ylabel('probality')
+
+	plt.tight_layout()
+
+	plt.savefig("fig/citation_distribution_{}_{}.png".format(tag,N),dpi=400)
+	logging.info('fig saved to fig/citation_distribution_{}_{}.png'.format(tag,N))
+
+
+def SubsetDis(tag):
+	start = 500000
+	interval = 100000
+
+	path = 'data/paper_ids_{}.txt'.format(tag)
+    paper_ids = [line.strip() for line in open(path)]
+	maxN = len(paper_ids)
+	Ns = [start+interval*i for i in range(1000) if start+interval*i < maxN]
+
+	for N in Ns:
+		logging.info('sub-dataset, size:{}.'.format(N))
+		sub_paper_ids = sampling_subdataset(paper_ids,N)
+		citation_relation_of_subdataset(tag,N,sub_paper_ids)
+
+	logging.info('Done')
+
 
 if __name__ == '__main__':
     # select_papers_by_subject('computer science','cs')
     # GetCitRelationsInsubj('computer science','cs')
-    plot_citation_distribution('cs')
+    # plot_citation_distribution('cs')
+
+    SubsetDis('cs')
