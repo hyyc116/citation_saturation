@@ -89,6 +89,52 @@ def GetCitRelationsInsubj(subjName,tag):
     open('data/pid_citnum_{}.json'.format(tag),'w').write(json.dumps(pid_citnum))
     logging.info('citation relations saved to {}, pid citnum saved to {}.'.format(outpath,'data/pid_citnum_{}.json'.format(tag)))
 
+
+def plot_citation_distribution(tag):
+
+	paper_citnum = json.loads(open('data/pid_citnum_{}.json'.format(tag)).read())
+
+
+	top100papers  = sorted(paper_citnum.keys(),keys=lambda x:int(paper_citnum[x]),reverse=True)[:100]
+
+	open('data/top_100ids_{}.txt'.format(tag),'w').write('\n'.join(top100papers))
+
+	logging.info('data saved to data/top_100ids_{}.txt'.format(tag))
+
+	value_counter = Counter(paper_citnum.values())
+
+	xs = []
+
+	ys = []
+
+	for citnum in sorted(value_counter.keys(),key=lambda x:int(x)):
+
+		xs.append(int(citnum))
+		ys.append(value_counter[citnum])
+
+	ys = np.arrys(ys)/np.sum(ys)
+
+	plt.figure(figsize=(5,4))
+
+	plt.plot(xs,ys,'o',fillstyle='none')
+
+
+	plt.xscale('log')
+	plt.yscale('log')
+
+	plt.xlabel('number of citations')
+
+	plt.ylabel('probality')
+
+	plt.tight_layout()
+
+	plt.savefig("fig/citation_distribution_{}.png".format(tag),dpi=400)
+
+	logging.info('fig saved to fig/citation_distribution_{}.png'.format(tag))
+
+
+
 if __name__ == '__main__':
     # select_papers_by_subject('computer science','cs')
-    GetCitRelationsInsubj('computer science','cs')
+    # GetCitRelationsInsubj('computer science','cs')
+    plot_citation_distribution('cs')
