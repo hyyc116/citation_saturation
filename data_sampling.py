@@ -111,7 +111,7 @@ def plot_citation_distribution(tag):
 		xs.append(int(citnum))
 		ys.append(value_counter[citnum])
 
-	ys = np.arrays(ys)/np.sum(ys)
+	ys = np.array(ys)/np.sum(ys)
 
 	plt.figure(figsize=(5,4))
 
