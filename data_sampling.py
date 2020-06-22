@@ -12,47 +12,49 @@ from basic_config import *
 def select_papers_by_subject(subjName,tag):
 
 
-	logging.info('load id subject json ...')
+    logging.info('load id subject json ...')
 
-	id_subjects = json.loads(open('../cascade_temporal_analysis/data/_ids_subjects.json').read())
+    id_subjects = json.loads(open('../cascade_temporal_analysis/data/_ids_subjects.json').read())
 
-	logging.info('id subjects loaded.')
+    logging.info('id subjects loaded.')
 
-	filtered_ids = []
+    filtered_ids = []
 
-	for _id in id_subjects.keys():
+    for _id in id_subjects.keys():
 
-		for subj in id_subjects[_id]:
+        for subj in id_subjects[_id]:
 
-			if subj.lower()==subjName.lower():
-				filtered_ids.append(_id)
+            if subj.lower()==subjName.lower():
+                filtered_ids.append(_id)
 
 
-	filtered_ids = list(set(filtered_ids))
+    filtered_ids = list(set(filtered_ids))
 
-	logging.info('{} ids in subject {}.'.format(len(filtered_ids),subjName))
+    logging.info('{} ids in subject {}.'.format(len(filtered_ids),subjName))
 
-	path = 'data/paper_ids_{}.txt'.format(tag)
+    path = 'data/paper_ids_{}.txt'.format(tag)
 
-	open(path,'w').write('\n'.join(filtered_ids))
+    open(path,'w').write('\n'.join(filtered_ids))
 
-	logging.info('data saved to {}.'.format(path))
+    logging.info('data saved to {}.'.format(path))
 
 
 def GetCitRelationsInsubj(subjName,tag):
 
-	path = 'data/paper_ids_{}.txt'.format(tag)
+    path = 'data/paper_ids_{}.txt'.format(tag)
 
-	paper_ids = set([line.strip() for line in open(path)])
+    paper_ids = set([line.strip() for line in open(path)])
 
-	outpath = 'data/pid_cits_{}.txt'.format(tag)
+    outpath = 'data/pid_cits_{}.txt'.format(tag)
 
-	of = open(outpath,'w')
+    of = open(outpath,'w')
 
-	pid_citnum = defaultdict(int)
+    pid_citnum = defaultdict(int)
 
-	lines = []
-	for line in open('../cascade_temporal_analysis/data/pid_cits_ALL.txt'):
+    progress = 0
+
+    lines = []
+    for line in open('../cascade_temporal_analysis/data/pid_cits_ALL.txt'):
 
         progress+=1
 
@@ -65,21 +67,21 @@ def GetCitRelationsInsubj(subjName,tag):
 
         if pid in paper_ids and citing_id in paper_ids:
 
-        	lines.append(line)
+            lines.append(line)
 
-        	pid_citnum[pid]+=1
+            pid_citnum[pid]+=1
 
         if len(lines)>0 and len(lines)%100000==0:
 
-        	of.write('\n'.join(lines)+'\n')
+            of.write('\n'.join(lines)+'\n')
 
-        	lines = []
+            lines = []
 
     if len(lines)>0 and len(lines)%100000==0:
 
-        	of.write('\n'.join(lines)+'\n')
+            of.write('\n'.join(lines)+'\n')
 
-        	lines = []
+            lines = []
 
 
     of.close()
@@ -88,5 +90,5 @@ def GetCitRelationsInsubj(subjName,tag):
     logging.info('citation relations saved to {}, pid citnum saved to {}.'.format(outpath,'data/pid_citnum_{}.json'.format(tag)))
 
 if __name__ == '__main__':
-	# select_papers_by_subject('computer science','cs')
-	GetCitRelationsInsubj('computer science','cs')
+    # select_papers_by_subject('computer science','cs')
+    GetCitRelationsInsubj('computer science','cs')
