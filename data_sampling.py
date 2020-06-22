@@ -197,14 +197,56 @@ def SubsetDis(tag):
     path = 'data/paper_ids_{}.txt'.format(tag)
     paper_ids = [line.strip() for line in open(path)]
     maxN = len(paper_ids)
+
+    top100ids = open('data/top_100ids_{}.txt'.format(tag))
+
     Ns = [start+interval*i for i in range(1000) if start+interval*i < maxN]
+
+
+    xs = []
+    ys = []
 
     for N in Ns:
         logging.info('sub-dataset, size:{}.'.format(N))
         sub_paper_ids = sampling_subdataset(paper_ids,N)
         citation_relation_of_subdataset(tag,N,sub_paper_ids)
 
+        xs.append(N)
+        avgC = avgCitnumOfTop100(top100ids,tag,N)
+        ys.append(avgC)
+
+
+    plt.figure(figsize=(5,4))
+
+    plt.plot(xs,ys)
+
+    plt.xlabel('size of dataset')
+    plt.ylabel('number of citations')
+
+    # plt.xscale('log')
+    # plt.yscale('log')
+
+    plt.tight_layout()
+
+    plt.savefig('fig/saturation_along_datasize_{}.png'.format(tag),dpi=400)
+
+    logging.info('result saved to {}.'.format('fig/saturation_along_datasize_{}.png'.format(tag)))
+
     logging.info('Done')
+
+
+def avgCitnumOfTop100(top100ids,tag,N):
+
+	pid_citnum = json.loads(open('data/pid_citnum_{}_{}.json'.format(tag,N)).read())
+
+	cits = []
+	for _id in top100ids:
+
+		cits.append(pid_citnum[_id])
+
+	return np.mean(cits)
+
+
 
 
 if __name__ == '__main__':
