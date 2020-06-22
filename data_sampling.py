@@ -14,7 +14,7 @@ def select_papers_by_subject(subjName,tag):
 
 	logging.info('load id subject json ...')
 
-	id_subjects = json.loads(open('../cascade_temporal_analysis/data/_id_subjects.json').read())
+	id_subjects = json.loads(open('../cascade_temporal_analysis/data/_ids_subjects.json').read())
 
 	logging.info('id subjects loaded.')
 
