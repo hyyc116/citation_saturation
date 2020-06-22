@@ -242,7 +242,7 @@ def avgCitnumOfTop100(top100ids,tag,N):
 	cits = []
 	for _id in top100ids:
 
-		cits.append(pid_citnum[_id])
+		cits.append(pid_citnum.get(_id,0))
 
 	return np.mean(cits)
 
