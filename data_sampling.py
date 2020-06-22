@@ -198,7 +198,7 @@ def SubsetDis(tag):
     paper_ids = [line.strip() for line in open(path)]
     maxN = len(paper_ids)
 
-    top100ids = open('data/top_100ids_{}.txt'.format(tag))
+    top100ids = [line.strip() for line in open('data/top_100ids_{}.txt'.format(tag))]
 
     Ns = [start+interval*i for i in range(1000) if start+interval*i < maxN]
 
@@ -209,6 +209,7 @@ def SubsetDis(tag):
     for N in Ns:
         logging.info('sub-dataset, size:{}.'.format(N))
         sub_paper_ids = sampling_subdataset(paper_ids,N)
+        sub_paper_ids = sub_paper_ids | set(top100ids)
         citation_relation_of_subdataset(tag,N,sub_paper_ids)
 
         xs.append(N)
