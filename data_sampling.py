@@ -88,5 +88,5 @@ def GetCitRelationsInsubj(subjName,tag):
     logging.info('citation relations saved to {}, pid citnum saved to {}.'.format(outpath,'data/pid_citnum_{}.json'.format(tag)))
 
 if __name__ == '__main__':
-	select_papers_by_subject('computer science','cs')
+	# select_papers_by_subject('computer science','cs')
 	GetCitRelationsInsubj('computer science','cs')
