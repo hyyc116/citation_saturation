@@ -93,45 +93,45 @@ def GetCitRelationsInsubj(tag):
 
 def plot_citation_distribution(tag):
 
-	paper_citnum = json.loads(open('data/pid_citnum_{}.json'.format(tag)).read())
+    paper_citnum = json.loads(open('data/pid_citnum_{}.json'.format(tag)).read())
 
-	top100papers  = sorted(paper_citnum.keys(),key=lambda x:int(paper_citnum[x]),reverse=True)[:100]
+    top100papers  = sorted(paper_citnum.keys(),key=lambda x:int(paper_citnum[x]),reverse=True)[:100]
 
-	open('data/top_100ids_{}.txt'.format(tag),'w').write('\n'.join(top100papers))
+    open('data/top_100ids_{}.txt'.format(tag),'w').write('\n'.join(top100papers))
 
-	logging.info('data saved to data/top_100ids_{}.txt'.format(tag))
+    logging.info('data saved to data/top_100ids_{}.txt'.format(tag))
 
-	value_counter = Counter(paper_citnum.values())
+    value_counter = Counter(paper_citnum.values())
 
-	xs = []
+    xs = []
 
-	ys = []
+    ys = []
 
-	for citnum in sorted(value_counter.keys(),key=lambda x:int(x)):
+    for citnum in sorted(value_counter.keys(),key=lambda x:int(x)):
 
-		xs.append(int(citnum))
+        xs.append(int(citnum))
 
-		ys.append(value_counter[citnum])
+        ys.append(value_counter[citnum])
 
-	ys = np.array(ys)/float(np.sum(ys))
+    ys = np.array(ys)/float(np.sum(ys))
 
-	plt.figure(figsize=(5,4))
+    plt.figure(figsize=(5,4))
 
-	plt.plot(xs,ys,'o',fillstyle='none')
+    plt.plot(xs,ys,'o',fillstyle='none')
 
 
-	plt.xscale('log')
-	plt.yscale('log')
+    plt.xscale('log')
+    plt.yscale('log')
 
-	plt.xlabel('number of citations')
+    plt.xlabel('number of citations')
 
-	plt.ylabel('probality')
+    plt.ylabel('probality')
 
-	plt.tight_layout()
+    plt.tight_layout()
 
-	plt.savefig("fig/citation_distribution_{}.png".format(tag),dpi=400)
+    plt.savefig("fig/citation_distribution_{}.png".format(tag),dpi=400)
 
-	logging.info('fig saved to fig/citation_distribution_{}.png'.format(tag))
+    logging.info('fig saved to fig/citation_distribution_{}.png'.format(tag))
 
 
 def sampling_subdataset(paper_ids,N):
@@ -162,49 +162,49 @@ def citation_relation_of_subdataset(tag,N,paper_ids):
 
     ## plot citation distribution 
     value_counter = Counter(pid_citnum.values())
-	xs = []
-	ys = []
-	for citnum in sorted(value_counter.keys(),key=lambda x:int(x)):
+    xs = []
+    ys = []
+    for citnum in sorted(value_counter.keys(),key=lambda x:int(x)):
 
-		xs.append(int(citnum))
+        xs.append(int(citnum))
 
-		ys.append(value_counter[citnum])
+        ys.append(value_counter[citnum])
 
-	ys = np.array(ys)/float(np.sum(ys))
+    ys = np.array(ys)/float(np.sum(ys))
 
-	plt.figure(figsize=(5,4))
+    plt.figure(figsize=(5,4))
 
-	plt.plot(xs,ys,'o',fillstyle='none')
+    plt.plot(xs,ys,'o',fillstyle='none')
 
 
-	plt.xscale('log')
-	plt.yscale('log')
+    plt.xscale('log')
+    plt.yscale('log')
 
-	plt.xlabel('number of citations')
+    plt.xlabel('number of citations')
 
-	plt.ylabel('probality')
+    plt.ylabel('probality')
 
-	plt.tight_layout()
+    plt.tight_layout()
 
-	plt.savefig("fig/citation_distribution_{}_{}.png".format(tag,N),dpi=400)
-	logging.info('fig saved to fig/citation_distribution_{}_{}.png'.format(tag,N))
+    plt.savefig("fig/citation_distribution_{}_{}.png".format(tag,N),dpi=400)
+    logging.info('fig saved to fig/citation_distribution_{}_{}.png'.format(tag,N))
 
 
 def SubsetDis(tag):
-	start = 500000
-	interval = 100000
+    start = 500000
+    interval = 100000
 
-	path = 'data/paper_ids_{}.txt'.format(tag)
+    path = 'data/paper_ids_{}.txt'.format(tag)
     paper_ids = [line.strip() for line in open(path)]
-	maxN = len(paper_ids)
-	Ns = [start+interval*i for i in range(1000) if start+interval*i < maxN]
+    maxN = len(paper_ids)
+    Ns = [start+interval*i for i in range(1000) if start+interval*i < maxN]
 
-	for N in Ns:
-		logging.info('sub-dataset, size:{}.'.format(N))
-		sub_paper_ids = sampling_subdataset(paper_ids,N)
-		citation_relation_of_subdataset(tag,N,sub_paper_ids)
+    for N in Ns:
+        logging.info('sub-dataset, size:{}.'.format(N))
+        sub_paper_ids = sampling_subdataset(paper_ids,N)
+        citation_relation_of_subdataset(tag,N,sub_paper_ids)
 
-	logging.info('Done')
+    logging.info('Done')
 
 
 if __name__ == '__main__':
