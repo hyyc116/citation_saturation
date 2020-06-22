@@ -189,6 +189,8 @@ def citation_relation_of_subdataset(tag,N,paper_ids):
     plt.savefig("fig/citation_distribution_{}_{}.png".format(tag,N),dpi=400)
     logging.info('fig saved to fig/citation_distribution_{}_{}.png'.format(tag,N))
 
+    return np.mean(sorted(pid_citnum.values(),reverse=True)[:100])
+
 
 def SubsetDis(tag):
     start = 500000
@@ -198,7 +200,7 @@ def SubsetDis(tag):
     paper_ids = [line.strip() for line in open(path)]
     maxN = len(paper_ids)
 
-    top100ids = [line.strip() for line in open('data/top_100ids_{}.txt'.format(tag))]
+    # top100ids = [line.strip() for line in open('data/top_100ids_{}.txt'.format(tag))]
 
     Ns = [start+interval*i for i in range(1000) if start+interval*i < maxN]
 
@@ -209,11 +211,11 @@ def SubsetDis(tag):
     for N in Ns:
         logging.info('sub-dataset, size:{}.'.format(N))
         sub_paper_ids = sampling_subdataset(paper_ids,N)
-        sub_paper_ids = sub_paper_ids | set(top100ids)
-        citation_relation_of_subdataset(tag,N,sub_paper_ids)
+        # sub_paper_ids = sub_paper_ids | set(top100ids)
+        avgC = citation_relation_of_subdataset(tag,N,sub_paper_ids)
 
         xs.append(N)
-        avgC = avgCitnumOfTop100(top100ids,tag,N)
+        # avgC = avgCitnumOfTop100(top100ids,tag,N)
         ys.append(avgC)
 
 
