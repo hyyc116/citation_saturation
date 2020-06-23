@@ -11,7 +11,6 @@ from basic_config import *
 ## 根据领域名称过滤paper
 def select_papers_by_subject(subjName,tag):
 
-
     logging.info('load id subject json ...')
 
     id_subjects = json.loads(open('../cascade_temporal_analysis/data/_ids_subjects.json').read())
@@ -37,7 +36,6 @@ def select_papers_by_subject(subjName,tag):
     open(path,'w').write('\n'.join(filtered_ids))
 
     logging.info('data saved to {}.'.format(path))
-
 
 
 def GetCitRelationsInsubj(tag):
@@ -249,6 +247,27 @@ def avgCitnumOfTop100(top100ids,tag,N):
 
 	return np.mean(cits)
 
+## 根据年份来
+def year_dis(tag):
+
+	paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
+	path = 'data/paper_ids_{}.txt'.format(tag)
+    paper_ids = [line.strip() for line in open(path)]
+    pid_year_citnum = defaultdict(lambda:defaultdict(int))
+    for line in open('data/pid_cits_{}.txt'.format(tag)):
+
+    	line = line.strip()
+
+    	pid,citing_id = line.split('\t')
+
+    	citing_year = paper_year[citing_id]
+
+    	pid_year_citnum[pid][year]+=1
+
+
+    open('data/pid_year_citnum_{}.json'.format(tag),'w').write(json.dumps(pid_year_citnum))
+    logging.info('data saved to data/pid_year_citnum_{}.json'.format(tag))
+
 
 
 
@@ -257,4 +276,6 @@ if __name__ == '__main__':
     # GetCitRelationsInsubj('computer science','cs')
     # plot_citation_distribution('cs')
 
-    SubsetDis('cs')
+    # SubsetDis('cs')
+
+    year_dis('cs')
