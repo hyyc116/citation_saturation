@@ -253,20 +253,86 @@ def year_dis(tag):
     paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
     path = 'data/paper_ids_{}.txt'.format(tag)
     paper_ids = [line.strip() for line in open(path)]
+    year_total = defaultdict(int)
+    for pid in paper_ids:
+    	year_total[int(paper_year[pid])]+=1
+
+   	xs = []
+   	ys = []
+
+   	for year in sorted(year_total.keys()):
+
+   		xs.append(year)
+   		ys.append(year_total[year])
+
+
+    plt.figure(figsize=(5,4))
+
+    plt.plot(xs,ys)
+
+    plt.xlabel('year')
+    plt.ylabel('number of papers')
+
+    plt.tight_layout()
+
+    plt.savefig('fig/year_num_{}.png'.format(tag),dpi=400)
+    logging.info('fig saved to fig/year_num_{}.png'.format(tag))
+
+
     pid_year_citnum = defaultdict(lambda:defaultdict(int))
+
+    year_citrels = {}
     for line in open('data/pid_cits_{}.txt'.format(tag)):
 
         line = line.strip()
 
         pid,citing_id = line.split('\t')
 
-        citing_year = paper_year[citing_id]
+        year = int(paper_year[pid])
+        citing_year = int(paper_year[citing_id])
 
         pid_year_citnum[pid][citing_year]+=1
 
+        year_citrels[year] = [pid,citing_id]
 
-    open('data/pid_year_citnum_{}.json'.format(tag),'w').write(json.dumps(pid_year_citnum))
-    logging.info('data saved to data/pid_year_citnum_{}.json'.format(tag))
+    ## 对于每一年来讲
+    xs = []
+    ys = []
+    for year in sorted(year_total.keys()):
+
+    	logging.info('year {}...'.format(year))
+
+    	pid_citnum = defaultdict(int)
+    	for y in year_citrels.keys():
+
+    		if int(y)<=int(year):
+    			for pid,citing_id in year_citrels[y]:
+    				pid_citnum[pid]+=1
+
+    	xs.append(year)
+    	avgc = np.mean(sorted(pid_citnum.values(),reverse=True)[:100])
+    	ys.append(avgc)
+
+
+	plt.figure(figsize=(5,4))
+
+    plt.plot(xs,ys)
+
+    plt.xlabel('size of dataset')
+    plt.ylabel('number of citations')
+
+    # plt.xscale('log')
+    # plt.yscale('log')
+
+    plt.tight_layout()
+
+    plt.savefig('fig/saturation_along_year_{}.png'.format(tag),dpi=400)
+    logging.info('fig saved to fig/saturation_along_year_{}.png'.format(tag))
+
+
+
+
+
 
 
 
