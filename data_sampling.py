@@ -281,7 +281,7 @@ def year_dis(tag):
 
     pid_year_citnum = defaultdict(lambda:defaultdict(int))
 
-    year_citrels = {}
+    year_citrels = defaultdict(list)
     for line in open('data/pid_cits_{}.txt'.format(tag)):
 
         line = line.strip()
@@ -293,7 +293,7 @@ def year_dis(tag):
 
         pid_year_citnum[pid][citing_year]+=1
 
-        year_citrels[year] = [pid,citing_id]
+        year_citrels[year].append([pid,citing_id])
 
     ## 对于每一年来讲
     xs = []
