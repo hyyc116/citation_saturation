@@ -262,7 +262,7 @@ def year_dis(tag):
 
         citing_year = paper_year[citing_id]
 
-        pid_year_citnum[pid][year]+=1
+        pid_year_citnum[pid][citing_year]+=1
 
 
     open('data/pid_year_citnum_{}.json'.format(tag),'w').write(json.dumps(pid_year_citnum))
