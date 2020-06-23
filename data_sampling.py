@@ -238,31 +238,31 @@ def SubsetDis(tag):
 
 def avgCitnumOfTop100(top100ids,tag,N):
 
-	pid_citnum = json.loads(open('data/pid_citnum_{}_{}.json'.format(tag,N)).read())
+    pid_citnum = json.loads(open('data/pid_citnum_{}_{}.json'.format(tag,N)).read())
 
-	cits = []
-	for _id in top100ids:
+    cits = []
+    for _id in top100ids:
 
-		cits.append(pid_citnum.get(_id,0))
+        cits.append(pid_citnum.get(_id,0))
 
-	return np.mean(cits)
+    return np.mean(cits)
 
 ## 根据年份来
 def year_dis(tag):
 
-	paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
-	path = 'data/paper_ids_{}.txt'.format(tag)
+    paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
+    path = 'data/paper_ids_{}.txt'.format(tag)
     paper_ids = [line.strip() for line in open(path)]
     pid_year_citnum = defaultdict(lambda:defaultdict(int))
     for line in open('data/pid_cits_{}.txt'.format(tag)):
 
-    	line = line.strip()
+        line = line.strip()
 
-    	pid,citing_id = line.split('\t')
+        pid,citing_id = line.split('\t')
 
-    	citing_year = paper_year[citing_id]
+        citing_year = paper_year[citing_id]
 
-    	pid_year_citnum[pid][year]+=1
+        pid_year_citnum[pid][year]+=1
 
 
     open('data/pid_year_citnum_{}.json'.format(tag),'w').write(json.dumps(pid_year_citnum))
