@@ -320,7 +320,7 @@ def year_dis(tag):
         avgc_100 = np.mean(sorted_cits[:100])
         ys_100.append(avgc_100)
 
-        avgc_100 = np.mean(sorted_cits[:1000])
+        avgc_1000 = np.mean(sorted_cits[:1000])
         ys_1000.append(avgc_1000)
 
         avgc_t1 = np.mean(sorted_cits[:int(length/100)])
