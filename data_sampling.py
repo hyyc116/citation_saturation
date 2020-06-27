@@ -255,30 +255,30 @@ def year_dis(tag):
     paper_ids = [line.strip() for line in open(path)]
     year_total = defaultdict(int)
     for pid in paper_ids:
-    	year_total[int(paper_year[pid])]+=1
+        year_total[int(paper_year[pid])]+=1
 
-   	xs = []
-   	ys = []
+       xs = []
+       ys = []
 
-   	for year in sorted(year_total.keys()):
+       for year in sorted(year_total.keys()):
 
-   		xs.append(year)
-   		ys.append(year_total[year])
+           xs.append(year)
+           ys.append(year_total[year])
 
 
-   	ys_t = [ys[:i+1] for i in range(len(ys))]
+       ys_t = [np.sum(ys[:i+1]) for i in range(len(ys))]
 
-    plt.figure(figsize=(5,4))
+    # plt.figure(figsize=(5,4))
 
-    plt.plot(xs,ys)
+    # plt.plot(xs,ys)
 
-    plt.xlabel('year')
-    plt.ylabel('number of papers')
+    # plt.xlabel('year')
+    # plt.ylabel('number of papers')
 
-    plt.tight_layout()
+    # plt.tight_layout()
 
-    plt.savefig('fig/year_num_{}.png'.format(tag),dpi=400)
-    logging.info('fig saved to fig/year_num_{}.png'.format(tag))
+    # plt.savefig('fig/year_num_{}.png'.format(tag),dpi=400)
+    # logging.info('fig saved to fig/year_num_{}.png'.format(tag))
 
 
     pid_year_citnum = defaultdict(lambda:defaultdict(int))
@@ -302,21 +302,21 @@ def year_dis(tag):
     ys = []
     for year in sorted(year_total.keys()):
 
-    	logging.info('year {}...'.format(year))
+        logging.info('year {}...'.format(year))
 
-    	pid_citnum = defaultdict(int)
-    	for y in year_citrels.keys():
+        pid_citnum = defaultdict(int)
+        for y in year_citrels.keys():
 
-    		if int(y)<=int(year):
-    			for pid,citing_id in year_citrels[y]:
-    				pid_citnum[pid]+=1
+            if int(y)<=int(year):
+                for pid,citing_id in year_citrels[y]:
+                    pid_citnum[pid]+=1
 
-    	xs.append(year)
-    	avgc = np.mean(sorted(pid_citnum.values(),reverse=True)[:100])
-    	ys.append(avgc)
+        xs.append(year)
+        avgc = np.mean(sorted(pid_citnum.values(),reverse=True)[:100])
+        ys.append(avgc)
 
 
-	plt.figure(figsize=(5,4))
+    plt.figure(figsize=(5,4))
 
     plt.plot(ys_t,ys)
 
@@ -330,11 +330,6 @@ def year_dis(tag):
 
     plt.savefig('fig/saturation_along_year_{}.png'.format(tag),dpi=400)
     logging.info('fig saved to fig/saturation_along_year_{}.png'.format(tag))
-
-
-
-
-
 
 
 
