@@ -266,6 +266,8 @@ def year_dis(tag):
    		ys.append(year_total[year])
 
 
+   	ys_t = [ys[:i+1] for i in range(len(ys))]
+
     plt.figure(figsize=(5,4))
 
     plt.plot(xs,ys)
@@ -316,7 +318,7 @@ def year_dis(tag):
 
 	plt.figure(figsize=(5,4))
 
-    plt.plot(xs,ys)
+    plt.plot(ys_t,ys)
 
     plt.xlabel('size of dataset')
     plt.ylabel('number of citations')
