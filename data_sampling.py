@@ -257,16 +257,16 @@ def year_dis(tag):
     for pid in paper_ids:
         year_total[int(paper_year[pid])]+=1
 
-       xs = []
-       ys = []
+        xs = []
+        ys = []
 
-       for year in sorted(year_total.keys()):
+        for year in sorted(year_total.keys()):
 
-           xs.append(year)
-           ys.append(year_total[year])
+            xs.append(year)
+            ys.append(year_total[year])
 
 
-       ys_t = [np.sum(ys[:i+1]) for i in range(len(ys))]
+    ys_t = [np.sum(ys[:i+1]) for i in range(len(ys))]
 
     # plt.figure(figsize=(5,4))
 
@@ -299,7 +299,10 @@ def year_dis(tag):
 
     ## 对于每一年来讲
     xs = []
-    ys = []
+    ys_100 = []
+    ys_1000 = []
+    ys_t1 = []
+    ys_t5 = []
     for year in sorted(year_total.keys()):
 
         logging.info('year {}...'.format(year))
@@ -312,13 +315,27 @@ def year_dis(tag):
                     pid_citnum[pid]+=1
 
         xs.append(year)
-        avgc = np.mean(sorted(pid_citnum.values(),reverse=True)[:100])
-        ys.append(avgc)
+        sorted_cits = sorted(pid_citnum.values(),reverse=True)
+        length = len(sorted_cits)
+        avgc_100 = np.mean(sorted_cits[:100])
+        ys_100.append(avgc_100)
+
+        avgc_100 = np.mean(sorted_cits[:1000])
+        ys_1000.append(avgc_1000)
+
+        avgc_t1 = np.mean(sorted_cits[:int(length/100)])
+        ys_t1.append(avgc_t1)
+
+        avgc_t5 = np.mean(sorted_cits[:int(length/20)])
+        ys_t5.append(avgc_t5)
 
 
     plt.figure(figsize=(5,4))
 
-    plt.plot(ys_t,ys)
+    plt.plot(ys_t,ys_100,label='top 100')
+    plt.plot(ys_t,ys_1000,label='top 1000')
+    plt.plot(ys_t,ys_t1,label='top 1%')
+    plt.plot(ys_t,ys_t5,label='top 5%')
 
     plt.xlabel('size of dataset')
     plt.ylabel('number of citations')
