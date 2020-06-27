@@ -7,6 +7,8 @@
 '''
 
 from basic_config import *
+from matplotlib.ticker import FuncFormatter 
+
 
 ## 根据领域名称过滤paper
 def select_papers_by_subject(subjName,tag):
