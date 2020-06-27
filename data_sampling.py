@@ -334,14 +334,19 @@ def year_dis(tag):
 
     plt.plot(ys_t,ys_100,label='top 100')
     plt.plot(ys_t,ys_1000,label='top 1000')
-    plt.plot(ys_t,ys_t1,label='top 1%')
-    plt.plot(ys_t,ys_t5,label='top 5%')
+    # plt.plot(ys_t,ys_t1,label='top 1%')
+    # plt.plot(ys_t,ys_t5,label='top 5%')
 
     plt.xlabel('size of dataset')
     plt.ylabel('number of citations')
 
-    plt.xscale('log')
+    # plt.xscale('log')
     # plt.yscale('log')
+
+    def formatnum(x, pos):
+    	return '$%.1f$x$10^{4}$' % (x/10000)
+	formatter = FuncFormatter(formatnum)
+	plt.gca().xaxis.set_major_formatter(formatter)
 
     plt.tight_layout()
 
@@ -349,9 +354,6 @@ def year_dis(tag):
 
     plt.savefig('fig/saturation_along_year_{}.png'.format(tag),dpi=400)
     logging.info('fig saved to fig/saturation_along_year_{}.png'.format(tag))
-
-
-
 
 if __name__ == '__main__':
     # select_papers_by_subject('computer science','cs')
