@@ -340,10 +340,12 @@ def year_dis(tag):
     plt.xlabel('size of dataset')
     plt.ylabel('number of citations')
 
-    # plt.xscale('log')
+    plt.xscale('log')
     # plt.yscale('log')
 
     plt.tight_layout()
+
+    plt.legend()
 
     plt.savefig('fig/saturation_along_year_{}.png'.format(tag),dpi=400)
     logging.info('fig saved to fig/saturation_along_year_{}.png'.format(tag))
