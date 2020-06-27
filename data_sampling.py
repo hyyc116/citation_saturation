@@ -28,7 +28,6 @@ def select_papers_by_subject(subjName,tag):
             if subj.lower()==subjName.lower():
                 filtered_ids.append(_id)
 
-
     filtered_ids = list(set(filtered_ids))
 
     logging.info('{} ids in subject {}.'.format(len(filtered_ids),subjName))
@@ -342,13 +341,13 @@ def year_dis(tag):
     plt.xlabel('size of dataset')
     plt.ylabel('number of citations')
 
-    # plt.xscale('log')
+    plt.xscale('log')
     # plt.yscale('log')
 
     def formatnum(x, pos):
         return '$%.1f$x$10^{4}$' % (x/10000)
     formatter = FuncFormatter(formatnum)
-    plt.gca().xaxis.set_major_formatter(formatter)
+    # plt.gca().xaxis.set_major_formatter(formatter)
 
     def logFunc(x,a,b):
     	return a*np.log(x)+b
@@ -358,7 +357,7 @@ def year_dis(tag):
     a = popt[0]
     b = popt[1]
 
-    plt.plot(ys_t,[logFunc(x,a,b) for x in ys_t],'-^',label='Top 100 Fit:$y={}*log(x)+{}$'.format(a,b))
+    plt.plot(ys_t,[logFunc(x,a,b) for x in ys_t],'-^',label='$y={}*log(x)+{}$'.format(a,b))
 
 
     popt, pcov = curve_fit(logFunc, ys_t, ys_1000)
@@ -366,7 +365,7 @@ def year_dis(tag):
     a = popt[0]
     b = popt[1]
 
-    plt.plot(ys_t,[logFunc(x,a,b) for x in ys_t],'-^',label='Top 1000 Fit:$y={}*log(x)+{}$'.format(a,b))
+    plt.plot(ys_t,[logFunc(x,a,b) for x in ys_t],'-^',label='$y={}*log(x)+{}$'.format(a,b))
 
     plt.tight_layout()
 
