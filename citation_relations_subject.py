@@ -15,17 +15,17 @@ from basic_config import *
 '''
 def get_paperids_of_subjects(subjName):
 
-	pass
+    pass
 
 ##统计wos所有论文的citation count随着时间的变化情况
 def stats_citation_count_of_papers():
 
-	logging.info('loading paper year obj ...')
-	paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
+    logging.info('loading paper year obj ...')
+    paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
 
-	logging.info('start to stat citation relations ...')
+    logging.info('start to stat citation relations ...')
 
-	pid_year_citnum = defaultdict(lambda:defaultdict(int))
+    pid_year_citnum = defaultdict(lambda:defaultdict(int))
 
     progress = 0
 
@@ -42,7 +42,7 @@ def stats_citation_count_of_papers():
         pid,citing_id = line.split("\t")
 
         if paper_year.get(pid,None) is None or paper_year.get(citing_id,None) is None:
-        	continue
+            continue
 
         pid_year_citnum[pid][int(paper_year[citing_id])]+=1
 
@@ -52,14 +52,14 @@ def stats_citation_count_of_papers():
 ##整体领域高被引论文的平均数随着数据规模的变化情况
 def general_top_citation_trend_over_datasize():
 
-	pass
+    pass
 
 ##不同的年代发表的高被引论文的引用次数平均数随着数据规模的变化情况
 def temporal_top_citation_trend_over_datasize():
 
-	pass
+    pass
 
 
 if __name__ == '__main__':
-	## 统计论文引用次数随着时间的变化
-	stats_citation_count_of_papers()
+    ## 统计论文引用次数随着时间的变化
+    stats_citation_count_of_papers()

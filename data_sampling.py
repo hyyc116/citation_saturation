@@ -336,11 +336,11 @@ def year_dis(tag):
     ys_1000_fit = []
     for i in range(len(ys_t)):
 
-    	if ys_t[i]>10000:
+        if ys_t[i]>10000:
 
-    		xs.append(ys_t[i])
-    		ys_100_fit.append(ys_100[i])
-    		ys_1000_fit.append(ys_1000[i])
+            xs.append(ys_t[i])
+            ys_100_fit.append(ys_100[i])
+            ys_1000_fit.append(ys_1000[i])
 
     plt.figure(figsize=(5,4))
 
@@ -361,7 +361,7 @@ def year_dis(tag):
     # plt.gca().xaxis.set_major_formatter(formatter)
 
     def logFunc(x,a,b):
-    	return a*np.log(x)+b
+        return a*np.log(x)+b
 
     popt, pcov = curve_fit(logFunc, xs, ys_100)
 
