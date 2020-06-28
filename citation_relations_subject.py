@@ -54,6 +54,7 @@ def general_top_citation_trend_over_datasize():
 
 	sub_foses = ['computer science','physics']
 
+	## 按照学科进行分析
 	pid_year_citnum = json.loads(open('data/pid_year_citnum.json').read())
 
 
@@ -79,7 +80,7 @@ def paper_year_total_citnum(year_citnum):
 
 		total+= year_citnum.get(str(y),0)
 
-		year_total[str(y)]=total
+		year_total[int(y)]=total
 
 	return year_total
 

@@ -376,7 +376,7 @@ def year_dis(tag):
     a = popt[0]
     b = popt[1]
 
-    plt.plot(xs,[logFunc(x,a,b) for x in xs],'--',label='$y={}*log(x)+{}$'.format(a,b))
+    plt.plot(xs,[logFunc(x,a,b) for x in xs],'--',label='$y={:.2f}*log(x)+{:.2f}$'.format(a,b))
 
     plt.tight_layout()
 
