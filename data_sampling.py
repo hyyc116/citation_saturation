@@ -330,11 +330,21 @@ def year_dis(tag):
         avgc_t5 = np.mean(sorted_cits[:int(length/20)])
         ys_t5.append(avgc_t5)
 
+    xs = []
+    ys_100_fit = []
+    ys_1000_fit = []
+    for i in range(len(ys_t)):
+
+    	if ys_t[i]>10000:
+
+    		xs.append(ys_t[i])
+    		ys_100_fit.append(ys_100[i])
+    		ys_1000_fit.append(ys_1000[i])
 
     plt.figure(figsize=(5,4))
 
-    plt.plot(ys_t,ys_100,label='top 100')
-    plt.plot(ys_t,ys_1000,label='top 1000')
+    plt.plot(ys_t,ys_100_fit,label='top 100')
+    plt.plot(ys_t,ys_1000_fit,label='top 1000')
     # plt.plot(ys_t,ys_t1,label='top 1%')
     # plt.plot(ys_t,ys_t5,label='top 5%')
 
@@ -357,7 +367,7 @@ def year_dis(tag):
     a = popt[0]
     b = popt[1]
 
-    plt.plot(ys_t,[logFunc(x,a,b) for x in ys_t],'-^',label='$y={}*log(x)+{}$'.format(a,b))
+    plt.plot(ys_t,[logFunc(x,a,b) for x in ys_t],'-.',label='$y={:.2f}*log(x)+{:.2f}$'.format(a,b))
 
 
     popt, pcov = curve_fit(logFunc, ys_t, ys_1000)
@@ -365,7 +375,7 @@ def year_dis(tag):
     a = popt[0]
     b = popt[1]
 
-    plt.plot(ys_t,[logFunc(x,a,b) for x in ys_t],'-^',label='$y={}*log(x)+{}$'.format(a,b))
+    plt.plot(ys_t,[logFunc(x,a,b) for x in ys_t],'--',label='$y={}*log(x)+{}$'.format(a,b))
 
     plt.tight_layout()
 
