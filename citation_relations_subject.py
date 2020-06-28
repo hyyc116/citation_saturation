@@ -53,12 +53,16 @@ def stats_citation_count_of_papers():
 def general_top_citation_trend_over_datasize():
 	## 加载top subject
 	pid_topsubj = json.loads(open('../cascade_temporal_analysis/data/_ids_top_subjects.json').read())
+
+	pid_subjs = json.loads(open('../cascade_temporal_analysis/data/_ids_top_subjects.json').read())
+
+
 	## paper year
 	paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
 
 	paper_ts = json.loads(open('data/pid_teamsize.json').read())
 
-	sub_foses = ['computer science','physics']
+	sub_foses = set(['computer science','physics'])
 
 	## 按照学科进行分析
 	pid_year_citnum = json.loads(open('data/pid_year_citnum.json').read())
@@ -84,10 +88,16 @@ def general_top_citation_trend_over_datasize():
 
 		topsubjs = pid_topsubj[pid]
 
+		subjs = pid_subjs[pid]
+
 		ts = paper_ts.get(pid,1)
 
 		for subj in topsubjs:
 			subj_year_num[subj][pubyear]+=1
+
+		for subj in subjs:
+			for subj.lower() in sub_foses:
+				subj_year_num[subj][pubyear]+=1
 
 		year_total =  paper_year_total_citnum(pid_year_citnum[pid])
 
@@ -96,6 +106,12 @@ def general_top_citation_trend_over_datasize():
 				subj_year_citnum_dis[subj][year][year_total[year]]+=1
 				subj_puby_year_citnum_dis[subj][pubyear][year][year_total[year]]+=1
 				subj_ts_year_citnum_dis[subj][ts][year][year_total[year]]+=1
+
+			for subj in subjs:
+				if subj.lower() in sub_foses:
+					subj_year_citnum_dis[subj][year][year_total[year]]+=1
+					subj_puby_year_citnum_dis[subj][pubyear][year][year_total[year]]+=1
+					subj_ts_year_citnum_dis[subj][ts][year][year_total[year]]+=1
 
 	open('data/subj_year_num.json','w').write(json.dumps(subj_year_num))
 	logging.info('subject year paper num data saved to data/subj_year_num.json')
