@@ -42,27 +42,27 @@ def select_papers_by_subject(subjName,tag):
 
 def get_paper_teamsize():
 
-	sql = 'select id,name_id,addr_id from wos_core.wos_address_names'
+       sql = 'select id,name_id,addr_id from wos_core.wos_address_names'
 
-	pid_names = defaultdict(set)
+       pid_names = defaultdict(set)
 
-	query_op = dbop()
-	progress = 0
-	for _id,name_id,addr_id in query_op.query_database(sql):
-		progress+=1
+       query_op = dbop()
+       progress = 0
+       for _id,name_id,addr_id in query_op.query_database(sql):
+              progress+=1
 
-		if progress%1000000==0:
-			logging.info('progress {} ...'.format(progress))
+              if progress%1000000==0:
+                     logging.info('progress {} ...'.format(progress))
 
-		pid_names[_id].add(name_id)
+              pid_names[_id].add(name_id)
 
-	pid_ts = {}
-	for pid in pid_names:
+       pid_ts = {}
+       for pid in pid_names:
 
-		pid_ts[pid] = len(pid_names)
+              pid_ts[pid] = len(pid_names)
 
-	open('data/pid_teamsize.json','w').write(json.dumps(pid_ts))
-	logging.info('{} data saved to data/pid_teamsize.json'.format(len(pid_ts)))
+       open('data/pid_teamsize.json','w').write(json.dumps(pid_ts))
+       logging.info('{} data saved to data/pid_teamsize.json'.format(len(pid_ts)))
 
 
 
