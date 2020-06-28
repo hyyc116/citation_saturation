@@ -25,7 +25,8 @@ def select_papers_by_subject(subjName,tag):
 
         for subj in id_subjects[_id]:
 
-            if subj.lower()==subjName.lower():
+            # if subj.lower()==subjName.lower():
+            if subjName.lower() in subj.lower():
                 filtered_ids.append(_id)
 
     filtered_ids = list(set(filtered_ids))
@@ -343,8 +344,8 @@ def year_dis(tag):
 
     plt.figure(figsize=(5,4))
 
-    plt.plot(ys_t,ys_100_fit,label='top 100')
-    plt.plot(ys_t,ys_1000_fit,label='top 1000')
+    plt.plot(xs,ys_100_fit,label='top 100')
+    plt.plot(xs,ys_1000_fit,label='top 1000')
     # plt.plot(ys_t,ys_t1,label='top 1%')
     # plt.plot(ys_t,ys_t5,label='top 5%')
 
@@ -362,20 +363,20 @@ def year_dis(tag):
     def logFunc(x,a,b):
     	return a*np.log(x)+b
 
-    popt, pcov = curve_fit(logFunc, ys_t, ys_100)
+    popt, pcov = curve_fit(logFunc, xs, ys_100)
 
     a = popt[0]
     b = popt[1]
 
-    plt.plot(ys_t,[logFunc(x,a,b) for x in ys_t],'-.',label='$y={:.2f}*log(x)+{:.2f}$'.format(a,b))
+    plt.plot(xs,[logFunc(x,a,b) for x in xs],'-.',label='$y={:.2f}*log(x)+{:.2f}$'.format(a,b))
 
 
-    popt, pcov = curve_fit(logFunc, ys_t, ys_1000)
+    popt, pcov = curve_fit(logFunc, xs, ys_1000)
 
     a = popt[0]
     b = popt[1]
 
-    plt.plot(ys_t,[logFunc(x,a,b) for x in ys_t],'--',label='$y={}*log(x)+{}$'.format(a,b))
+    plt.plot(xs,[logFunc(x,a,b) for x in xs],'--',label='$y={}*log(x)+{}$'.format(a,b))
 
     plt.tight_layout()
 
