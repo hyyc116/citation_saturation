@@ -363,7 +363,7 @@ def year_dis(tag):
     def logFunc(x,a,b):
         return a*np.log(x)+b
 
-    popt, pcov = curve_fit(logFunc, xs, ys_100)
+    popt, pcov = curve_fit(logFunc, xs, ys_100_fit)
 
     a = popt[0]
     b = popt[1]
@@ -371,7 +371,7 @@ def year_dis(tag):
     plt.plot(xs,[logFunc(x,a,b) for x in xs],'-.',label='$y={:.2f}*log(x)+{:.2f}$'.format(a,b))
 
 
-    popt, pcov = curve_fit(logFunc, xs, ys_1000)
+    popt, pcov = curve_fit(logFunc, xs, ys_1000_fit)
 
     a = popt[0]
     b = popt[1]

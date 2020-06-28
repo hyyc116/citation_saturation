@@ -52,12 +52,37 @@ def stats_citation_count_of_papers():
 ##整体领域高被引论文的平均数随着数据规模的变化情况
 def general_top_citation_trend_over_datasize():
 
+	sub_foses = ['computer science','physics']
+
+	pid_year_citnum = json.loads(open('data/pid_year_citnum.json').read())
+
+
+
     pass
 
 ##不同的年代发表的高被引论文的引用次数平均数随着数据规模的变化情况
 def temporal_top_citation_trend_over_datasize():
 
     pass
+
+
+def paper_year_total_citnum(year_citnum):
+
+	years = [int(year) for year in year_citnum.keys()]
+
+	minY = np.mean(years)
+	maxY = np.max(years)
+
+	year_total = {}
+	total = 0
+	for y in range(minY,maxY+1):
+
+		total+= year_citnum.get(str(y),0)
+
+		year_total[str(y)]=total
+
+	return year_total
+
 
 
 if __name__ == '__main__':
