@@ -40,6 +40,32 @@ def select_papers_by_subject(subjName,tag):
     logging.info('data saved to {}.'.format(path))
 
 
+def get_paper_teamsize():
+
+	sql = 'select id,name_id,addr_id from wos_core.wos_address_names'
+
+	pid_names = defaultdict(set)
+
+	query_op = dbop()
+	progress = 0
+	for _id,name_id,addr_id in query_op.query_database(sql):
+		progress+=1
+
+		if progress%1000000==0:
+			logging.info('progress {} ...'.format(progress))
+
+		pid_names[_id].add(name_id)
+
+	pid_ts = {}
+	for pid in pid_names:
+
+		pid_ts[pid] = len(pid_names)
+
+	open('data/pid_teamsize.json','w').write(json.dumps(pid_ts))
+	logging.info('{} data saved to data/pid_teamsize.json'.format(len(pid_ts)))
+
+
+
 def GetCitRelationsInsubj(tag):
 
     path = 'data/paper_ids_{}.txt'.format(tag)
@@ -391,4 +417,6 @@ if __name__ == '__main__':
     # plot_citation_distribution('cs')
     # SubsetDis('cs')
 
-    year_dis('cs')
+    # year_dis('cs')
+
+    get_paper_teamsize()

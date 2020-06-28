@@ -51,12 +51,40 @@ def stats_citation_count_of_papers():
 
 ##整体领域高被引论文的平均数随着数据规模的变化情况
 def general_top_citation_trend_over_datasize():
+	## 加载top subject
+	pid_topsubj = json.loads(open('../cascade_temporal_analysis/data/_ids_top_subjects.json').read())
+	## paper year
+	paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
 
 	sub_foses = ['computer science','physics']
 
 	## 按照学科进行分析
 	pid_year_citnum = json.loads(open('data/pid_year_citnum.json').read())
 
+	## 各个学科各年份的分布
+	## subj year num count
+	subj_year_citnum = defaultdict(lambda:defaultdict(lambda:defaultdict(int)))
+	puby_year_citnum = defaultdict(lambda:defaultdict(lambda:defaultdict(int)))
+	##各学科每年的论文数量
+	subj_year_num = defaultdict(lambda:defaultdict(int))
+
+	for pid in pid_year_citnum.keys():
+
+		pubyear = paper_year[pid]
+
+		topsubjs = pid_topsubj[pid]
+
+		for subj in topsubjs:
+			subj_year_citnum[subj][pubyear]+=1
+
+		year_total =  paper_year_total_citnum(pid_year_citnum[pid])
+
+		for year in range(1960,2011):
+
+			for subj in topsubjs:
+
+				subj_year_citnum[subj][year][year_total[year]]+=1
+				puby_year_citnum[pubyear][year][year_total[year]]+=1
 
 
     pass
