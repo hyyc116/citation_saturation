@@ -80,7 +80,7 @@ def general_top_citation_trend_over_datasize():
 
         for pid in pid_year_citnum.keys():
 
-            pubyear = paper_year[pid]
+            pubyear = int(paper_year[pid])
 
             if pubyear>= 2011:
                  continue
