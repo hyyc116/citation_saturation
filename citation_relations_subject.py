@@ -137,7 +137,7 @@ def paper_year_total_citnum(year_citnum):
 
     years = [int(year) for year in year_citnum.keys()]
 
-    minY = np.mean(years)
+    minY = np.min(years)
     maxY = np.max(years)
 
     year_total = {}
