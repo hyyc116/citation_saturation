@@ -100,11 +100,12 @@ def general_top_citation_trend_over_datasize():
 
             year_total =  paper_year_total_citnum(pid_year_citnum[pid])
 
-            for year in range(1960,2011):
+            for year in range(pubyear,2011):
+
                 for subj in topsubjs:
-                    subj_year_citnum_dis[subj][year][year_total[year]]+=1
-                    subj_puby_year_citnum_dis[subj][pubyear][year][year_total[year]]+=1
-                    subj_ts_year_citnum_dis[subj][ts][year][year_total[year]]+=1
+                    subj_year_citnum_dis[subj][year][year_total.get(year,0)]+=1
+                    subj_puby_year_citnum_dis[subj][pubyear][year][year_total.get(year,0)]+=1
+                    subj_ts_year_citnum_dis[subj][ts][year][year_total.get(year,0)]+=1
 
                 for subj in subjs:
                     if subj.lower() in sub_foses:
