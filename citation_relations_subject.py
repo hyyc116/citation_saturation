@@ -54,7 +54,7 @@ def general_top_citation_trend_over_datasize():
         ## 加载top subject
         pid_topsubj = json.loads(open('../cascade_temporal_analysis/data/_ids_top_subjects.json').read())
 
-        pid_subjs = json.loads(open('../cascade_temporal_analysis/data/_ids_top_subjects.json').read())
+        pid_subjs = json.loads(open('../cascade_temporal_analysis/data/_ids_subjects.json').read())
 
         ## paper year
         paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
@@ -85,7 +85,10 @@ def general_top_citation_trend_over_datasize():
             if pubyear>= 2011:
                  continue
 
-            topsubjs = pid_topsubj[pid]
+            topsubjs = pid_topsubj.get(pid,None)
+
+            if topsubjs is None:
+                continue
 
             subjs = pid_subjs[pid]
 
@@ -103,15 +106,27 @@ def general_top_citation_trend_over_datasize():
             for year in range(pubyear,2011):
 
                 for subj in topsubjs:
-                    subj_year_citnum_dis[subj][year][year_total.get(year,0)]+=1
-                    subj_puby_year_citnum_dis[subj][pubyear][year][year_total.get(year,0)]+=1
-                    subj_ts_year_citnum_dis[subj][ts][year][year_total.get(year,0)]+=1
+
+                    citN = year_total.get(year,0)
+
+                    if citN==0:
+                        continue
+
+                    subj_year_citnum_dis[subj][year][citN]+=1
+                    subj_puby_year_citnum_dis[subj][pubyear][year][citN]+=1
+                    subj_ts_year_citnum_dis[subj][ts][year][citN]+=1
 
                 for subj in subjs:
                     if subj.lower() in sub_foses:
-                        subj_year_citnum_dis[subj][year][year_total[year]]+=1
-                        subj_puby_year_citnum_dis[subj][pubyear][year][year_total[year]]+=1
-                        subj_ts_year_citnum_dis[subj][ts][year][year_total[year]]+=1
+
+                        citN = year_total.get(year,0)
+
+                        if citN==0:
+                            continue
+
+                        subj_year_citnum_dis[subj][year][citN]+=1
+                        subj_puby_year_citnum_dis[subj][pubyear][year][citN]+=1
+                        subj_ts_year_citnum_dis[subj][ts][year][citN]+=1
 
         open('data/subj_year_num.json','w').write(json.dumps(subj_year_num))
         logging.info('subject year paper num data saved to data/subj_year_num.json')
