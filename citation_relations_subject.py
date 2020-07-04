@@ -79,10 +79,10 @@ def stats_citation_count_of_papers(subj,tag):
 
         pid,citing_id = line.split("\t")
 
-        if pid is not in id_set:
+        if pid not in id_set:
             continue
 
-        if citing_id is not in id_set:
+        if citing_id not in id_set:
             continue
 
         if paper_year.get(pid,None) is None or paper_year.get(citing_id,None) is None:
@@ -168,7 +168,7 @@ def temporal_top_citation_trend_over_datasize(subj,tag):
     # logging.info('fig saved to fig/subj_citation_upper_limit.png.')
 
     # year_num = subj_year_num[subj]
-    
+
 
 ## 不同学科 不同年份的引用次数分布
 def upper_limit_over_year(subj,tag):
