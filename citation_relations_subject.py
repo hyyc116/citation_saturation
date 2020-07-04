@@ -206,7 +206,7 @@ def subj_upper_limit_over_year():
 
 def curve_fit_plotting(ax,xs,ys,label):
 
-    _,_,line,_ = ax.plot(xs,ys,label=label)
+    line = ax.plot(xs,ys,label=label)
 
     c= line.c
 
