@@ -154,7 +154,7 @@ def subj_upper_limit_over_year():
     logging.info('loading subj year citnum dis ...')
     subj_year_citnum_dis = json.loads(open('data/subj_year_citnum_dis.json').read())
 
-    fig,axes = plt.subplts(4,2,figsize=(10,16))
+    fig,axes = plt.subplots(4,2,figsize=(10,16))
 
     for i,subj in enumerate(sorted(subj_year_citnum_dis.keys(),key=lambda x:int(x))):
 
