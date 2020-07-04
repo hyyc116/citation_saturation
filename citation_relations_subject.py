@@ -158,6 +158,7 @@ def subj_upper_limit_over_year():
 
     fig,axes = plt.subplots(4,2,figsize=(10,16))
 
+
     for i,subj in enumerate(sorted(subj_year_citnum_dis.keys())):
 
         year_num = subj_year_num[subj]
@@ -337,11 +338,12 @@ def paper_num_dis_over_pubyear():
 
     plt.yscale('log')
 
-    plt.legend()
+    lgd = plt.legend(loc=9,bbox_to_anchor=(0.5, -0.1), ncol=2)
+    # plt.legend()
 
     plt.tight_layout()
 
-    plt.savefig('fig/subj_year_num_dis.png',dpi=400)
+    plt.savefig('fig/subj_year_num_dis.png',dpi=400,additional_artists=[lgd],bbox_inches="tight")
 
     logging.info('paper year num dis saved to fig/subj_year_num_dis.png')
 
