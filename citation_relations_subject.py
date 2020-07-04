@@ -156,7 +156,7 @@ def subj_upper_limit_over_year():
 
     fig,axes = plt.subplots(4,2,figsize=(10,16))
 
-    for i,subj in enumerate(sorted(subj_year_citnum_dis.keys(),key=lambda x:int(x))):
+    for i,subj in enumerate(sorted(subj_year_citnum_dis.keys())):
 
         ax = axes[i/2,i%2]
 
