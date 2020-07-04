@@ -214,6 +214,16 @@ def subj_upper_limit_over_year():
 
 def curve_fit_plotting(ax,xs,ys,label):
 
+    ##对数据的数量进行过滤
+    start_pos = 0
+    for i in range(len(xs)):
+        if xs[i]>100000:
+            start_pos = i
+            break
+
+    xs = xs[start_pos:]
+    ys = ys[start_pos:]
+
     line = ax.plot(xs,ys,label=label)
 
     c= line[0].get_color()
