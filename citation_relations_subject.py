@@ -208,7 +208,7 @@ def curve_fit_plotting(ax,xs,ys,label):
 
     line = ax.plot(xs,ys,label=label)
 
-    c= line.c
+    c= line[0].c
 
 
     def logFunc(x,a,b):
