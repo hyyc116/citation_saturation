@@ -180,7 +180,7 @@ def subj_upper_limit_over_year():
 
             citnum_dis = year_citnum_dis[year]
 
-            # top10 = topN_mean(citnum_dis,10)
+            top10 = topN_mean(citnum_dis,10)
 
             top100 = topN_mean(citnum_dis,100)
 
@@ -190,7 +190,7 @@ def subj_upper_limit_over_year():
             ys_100.append(top100)
             ys_1000.append(top1000)
 
-        curve_fit_plotting(ax,xs,ys_10,'top10')
+        # curve_fit_plotting(ax,xs,ys_10,'top10')
         curve_fit_plotting(ax,xs,ys_100,'top100')
         curve_fit_plotting(ax,xs,ys_1000,'top100')
 
