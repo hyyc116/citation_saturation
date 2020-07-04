@@ -202,6 +202,9 @@ def subj_upper_limit_over_year():
 
         ax.set_xscale('log')
 
+        ax.set_yscale('log')
+
+
         ax.legend()
 
 
