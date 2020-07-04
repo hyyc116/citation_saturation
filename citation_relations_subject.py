@@ -5,7 +5,7 @@
 '''
 
 from basic_config import *
-
+from gini import gini
 
 
 '''
@@ -146,6 +146,148 @@ def general_top_citation_trend_over_datasize():
 ##不同的年代发表的高被引论文的引用次数平均数随着数据规模的变化情况
 def temporal_top_citation_trend_over_datasize():
     paper_num_dis_over_pubyear()
+    subj_upper_limit_over_year()
+
+## 不同学科 不同年份的引用次数分布
+def subj_upper_limit_over_year():
+
+    logging.info('loading subj year citnum dis ...')
+    subj_year_citnum_dis = json.loads(open('data/subj_year_citnum_dis.json').read())
+
+    fig,axes = plt.subplts(4,2,figsize=(10,16))
+
+    for i,subj in enumerate(sorted(subj_year_citnum_dis.keys(),key=lambda x:int(x))):
+
+        ax = axes[i/2,i%2]
+
+        year_citnum_dis = subj_year_citnum_dis[subj]
+
+        xs = []
+        ys_10 = []
+        ys_100 = []
+        ys_1000 = []
+        for year in sorted(year_citnum_dis.keys(),key=lambda x:int(x)):
+            xs.append(int(year))
+
+            citnum_dis = year_citnum_dis[year]
+
+            top10 = topN_mean(citnum_dis,10)
+
+            top100 = topN_mean(citnum_dis,100)
+
+            top1000 = topN_mean(citnum_dis,1000)
+
+            ys_10.append(top10)
+            ys_100.append(top100)
+            ys_1000.append(top1000)
+
+        curve_fit_plotting(ax,xs,ys_10,'top10')
+        curve_fit_plotting(ax,xs,ys_100,'top100')
+        curve_fit_plotting(ax,xs,ys_1000,'top100')
+
+        ax.set_title(subj)
+
+        ax.set_xlabel('dataset size')
+
+        ax.set_ylabel('citation upper limit')
+
+        ax.set_xscale('log')
+
+        ax.legend()
+
+
+    plt.tight_layout()
+
+    plt.savefig('fig/subj_citation_upper_limit.png',dpi=400)
+
+    logging.info('fig saved to fig/subj_citation_upper_limit.png.')
+
+
+
+def curve_fit_plotting(ax,xs,ys,label):
+
+    _,_,line,_ = ax.plot(xs,ys,label=label)
+
+    c= line.c
+
+
+    def logFunc(x,a,b):
+        return a*np.log(x)+b
+
+    popt, pcov = curve_fit(logFunc, xs, ys)
+
+    a = popt[0]
+    b = popt[1]
+
+    ax.plot(xs,[logFunc(x,a,b) for x in xs],'-.',c=c)
+
+
+
+
+## 引用次数最高的N篇论文的平均引用次数
+def topN_mean(citnum_dis,N):
+
+    values = citnum_dis.values()
+
+    total = np.sum(values)
+
+    topN = sorted(values,key=lambda x:int(x),reverse=True)[:N]
+
+    mean_of_topNn = np.mean(topN)
+
+    return mean_of_topNn
+
+
+## 引用最高的Npercent的论文所占总引用次数的比例
+def top_percent(citnum_dis,percent):
+
+    values = citnum_dis.values()
+
+    total = np.sum(values)
+
+    N = int(len(values)*percent)
+
+    topN = sorted(values,key=lambda x:int(x),reverse=True)[:N]
+
+    sum_of_topN = np.sum(topN)
+
+    return float(sum_of_topN)/total
+
+
+## 占相同比例的引用次数的从高到低的论文文章分布
+def diversity_of_equal_percentile(citnum_dis,N):
+
+    values = citnum_dis.values()
+
+    total = np.sum(values)
+
+    num = len(values)
+
+    acc_total = 0
+    c_p = 0
+    num_of_p = 0
+
+    percents = []
+    for v in sorted(values,key=lambda x:int(x),reverse=True):
+
+        acc_total+=v
+
+        ##
+        if acc_total/float(total)-c_p>=1/float(N):
+
+            c_p+=1/float(N)
+
+            num_of_p+=1
+
+            percents.append(num_of_p/float(num))
+
+            num_of_p = 0
+
+    ##得到不同社区的文章比例，后计算不同percentile的论文的diversity
+
+    diversity = gini(percents)
+
+    return percents,diversity
 
 
 def paper_num_dis_over_pubyear():
@@ -164,8 +306,8 @@ def paper_num_dis_over_pubyear():
         total = 0
         for year in sorted(year_num.keys(),key=lambda x:int(x)):
 
-            xs.append(year)
-            total+= year_num[year]
+            xs.append(int(year))
+            total+= int(year_num[year])
             ys.append(total)
 
         plt.plot(xs,ys,label="{}".format(subj))
@@ -183,6 +325,7 @@ def paper_num_dis_over_pubyear():
 
     plt.savefig('fig/subj_year_num_dis.png',dpi=400)
 
+    logging.info('paper year num dis saved to fig/subj_year_num_dis.png')
 
 
 
