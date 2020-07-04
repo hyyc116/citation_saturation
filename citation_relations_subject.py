@@ -145,8 +145,45 @@ def general_top_citation_trend_over_datasize():
 
 ##不同的年代发表的高被引论文的引用次数平均数随着数据规模的变化情况
 def temporal_top_citation_trend_over_datasize():
+    paper_num_dis_over_pubyear()
 
-    pass
+
+def paper_num_dis_over_pubyear():
+
+    ## 不同领域随着年份领域论文总数量的变化
+    logging.info('loading subj year paper num ...')
+    subj_year_num = json.loads(open('data/subj_year_num.json').read())
+
+    plt.figure(figsize = (5,4))
+
+    for subj in sorted(subj_year_num.keys()):
+
+        year_num = subj_year_num[subj]
+        xs= []
+        ys = []
+        total = 0
+        for year in sorted(year_num.keys(),key=lambda x:int(x)):
+
+            xs.append(year)
+            total+= year_num[year]
+            ys.append(total)
+
+        plt.plot(xs,ys,label="{}".format(subj))
+
+
+    plt.xlabel('publication year')
+
+    plt.ylabel('total number of papers')
+
+    plt.yscale('log')
+
+    plt.legend()
+
+    plt.tight_layout()
+
+    plt.savefig('fig/subj_year_num_dis.png',dpi=400)
+
+
 
 
 def paper_year_total_citnum(year_citnum):
@@ -170,4 +207,6 @@ if __name__ == '__main__':
     # stats_citation_count_of_papers()
 
     ## subj pubyear teamsize over datasize
-    general_top_citation_trend_over_datasize()
+    # general_top_citation_trend_over_datasize()
+
+    temporal_top_citation_trend_over_datasize()
