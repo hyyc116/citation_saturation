@@ -59,6 +59,8 @@ def stats_citation_count_of_papers(subj,tag):
 
     logging.info('start to stat citation relations ...')
 
+    subj_pids = json.loads(open('data/subj_pids.jsom').read())
+
     ## 需要保证是local citation才行
     # _ids_top_subjects = json.loads(open(''))
     id_set = set(subj_pids[subj])
