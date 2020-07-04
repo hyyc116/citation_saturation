@@ -39,7 +39,7 @@ def get_paperids_of_subjects():
 
                     subj_year_num[s][paper_year[pid]]+=1
 
-    open('data/subj_pids.json','w').write(json.dumps(subj_pids))
+    open('data/subj_pids.json','w').write(json.dumps(subj_ids))
 
     logging.info('data saved to data/subj_pids.json')
 
