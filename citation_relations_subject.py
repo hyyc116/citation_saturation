@@ -25,7 +25,7 @@ def get_paperids_of_subjects():
 
     # pid_topsubj = json.loads(open('../cascade_temporal_analysis/data/_ids_top_subjects.json').read())
 
-    sub_foses = set(['computer science','physics','chemistry'])
+    sub_foses = set(['computer science','physics','chemistry','medicine','art','biology'])
 
     for pid in pid_subjs.keys():
 
