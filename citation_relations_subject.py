@@ -33,7 +33,7 @@ def get_paperids_of_subjects():
 
             for s in sub_foses:
 
-                if s in subj:
+                if s in subj.lower():
 
                     subj_ids[s].append(pid)
 
