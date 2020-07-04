@@ -180,7 +180,7 @@ def subj_upper_limit_over_year():
 
             citnum_dis = year_citnum_dis[year]
 
-            top10 = topN_mean(citnum_dis,10)
+            # top10 = topN_mean(citnum_dis,10)
 
             top100 = topN_mean(citnum_dis,100)
 
@@ -218,7 +218,7 @@ def curve_fit_plotting(ax,xs,ys,label):
     ##对数据的数量进行过滤
     start_pos = 0
     for i in range(len(xs)):
-        if xs[i]>100000:
+        if xs[i]>10000:
             start_pos = i
             break
 
