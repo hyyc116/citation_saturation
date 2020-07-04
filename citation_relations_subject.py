@@ -13,17 +13,55 @@ from gini import gini
 选择6个top领域，然后在6个top领域内分别选择一个子领域作为实验数据。
 
 '''
-def get_paperids_of_subjects(subjName):
+def get_paperids_of_subjects():
 
-    pass
+    pid_subjs = json.loads(open('../cascade_temporal_analysis/data/_ids_subjects.json').read())
+
+    paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
+
+
+    subj_ids = defaultdict(list)
+    subj_year_num = defaultdict(lambda:defaultdict(int))
+
+    # pid_topsubj = json.loads(open('../cascade_temporal_analysis/data/_ids_top_subjects.json').read())
+
+    sub_foses = set(['computer science','physics','chemistry'])
+
+    for pid in pid_subjs.keys():
+
+        for subj in pid_subjs[pid]:
+
+            for s in sub_foses:
+
+                if s in subj:
+
+                    subj_ids[s].append(pid)
+
+                    subj_year_num[s][paper_year[pid]]+=1
+
+    open('data/subj_pids.json','w').write(json.dumps(subj_pids))
+
+    logging.info('data saved to data/subj_pids.json')
+
+    open('data/subj_paper_num.json','w').write(json.dumps(subj_year_num))
+
+    logging.info('data saved to data/subj_paper_num.json')
+
+
+    for subj in subj_ids.keys():
+        logging.info('there are {} papers in subj {}'.format(len(subj_ids[subj]),subj))
 
 ##统计wos所有论文的citation count随着时间的变化情况
-def stats_citation_count_of_papers():
+def stats_citation_count_of_papers(subj,tag):
 
     logging.info('loading paper year obj ...')
     paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
 
     logging.info('start to stat citation relations ...')
+
+    ## 需要保证是local citation才行
+    # _ids_top_subjects = json.loads(open(''))
+    id_set = set(subj_pids[subj])
 
     pid_year_citnum = defaultdict(lambda:defaultdict(int))
 
@@ -41,69 +79,51 @@ def stats_citation_count_of_papers():
 
         pid,citing_id = line.split("\t")
 
+        if pid is not in id_set:
+            continue
+
+        if citing_id is not in id_set:
+            continue
+
         if paper_year.get(pid,None) is None or paper_year.get(citing_id,None) is None:
             continue
 
         pid_year_citnum[pid][int(paper_year[citing_id])]+=1
 
-    open('data/pid_year_citnum.json','w').write(json.dumps(pid_year_citnum))
-    logging.info('pid year citnum saved to data/pid_year_citnum.json.')
+    open('data/pid_year_citnum_{}.json'.format(tag),'w').write(json.dumps(pid_year_citnum))
+    logging.info('pid year citnum saved to data/pid_year_citnum_{}.json.'.format(tag))
 
 ##整体领域高被引论文的平均数随着数据规模的变化情况
-def general_top_citation_trend_over_datasize():
-        ## 加载top subject
-        pid_topsubj = json.loads(open('../cascade_temporal_analysis/data/_ids_top_subjects.json').read())
-
-        pid_subjs = json.loads(open('../cascade_temporal_analysis/data/_ids_subjects.json').read())
+def general_top_citation_trend_over_datasize(subj,tag):
 
         ## paper year
         paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
 
         paper_ts = json.loads(open('data/pid_teamsize.json').read())
 
-        sub_foses = set(['computer science','physics'])
-
         ## 按照学科进行分析
-        pid_year_citnum = json.loads(open('data/pid_year_citnum.json').read())
+        pid_year_citnum = json.loads(open('data/pid_year_citnum_{}.json'.format(tag)).read())
 
-        ## 各个学科各年份的分布
-        ## subj year num count 各学科每年的引用次数分布
-        subj_year_citnum_dis = defaultdict(lambda:defaultdict(lambda:defaultdict(int)))
+        ## year num count 各学科每年的引用次数分布
+        year_citnum_dis = defaultdict(lambda:defaultdict(int))
         ## 根据发布年份的引用次数分布
-        subj_puby_year_citnum_dis = defaultdict(lambda:defaultdict(lambda:defaultdict(lambda:defaultdict(int))))
-        ##各学科每年的论文数量
-        subj_year_num = defaultdict(lambda:defaultdict(int))
+        puby_year_citnum_dis = defaultdict(lambda:defaultdict(lambda:defaultdict(int)))
 
         ## 各学科中 不同 teamsize随着时间的变化
-        subj_ts_year_citnum_dis = defaultdict(lambda:defaultdict(lambda:defaultdict(lambda:defaultdict(int))))
-
+        ts_year_citnum_dis = defaultdict(lambda:defaultdict(lambda:defaultdict(int)))
 
         for pid in pid_year_citnum.keys():
 
             pubyear = int(paper_year[pid])
 
-            if pubyear>= 2011:
+            if pubyear>= 2016:
                  continue
-
-            topsubjs = pid_topsubj.get(pid,None)
-
-            if topsubjs is None:
-                continue
-
-            subjs = pid_subjs[pid]
 
             ts = paper_ts.get(pid,1)
 
-            for subj in topsubjs:
-                subj_year_num[subj][pubyear]+=1
-
-            for subj in subjs:
-                if subj.lower() in sub_foses:
-                    subj_year_num[subj][pubyear]+=1
-
             year_total =  paper_year_total_citnum(pid_year_citnum[pid])
 
-            for year in range(pubyear,2011):
+            for year in range(pubyear,2016):
 
                 for subj in topsubjs:
 
@@ -112,107 +132,100 @@ def general_top_citation_trend_over_datasize():
                     if citN==0:
                         continue
 
-                    subj_year_citnum_dis[subj][year][citN]+=1
-                    subj_puby_year_citnum_dis[subj][pubyear][year][citN]+=1
-                    subj_ts_year_citnum_dis[subj][ts][year][citN]+=1
+                    year_citnum_dis[year][citN]+=1
+                    puby_year_citnum_dis[pubyear][year][citN]+=1
+                    ts_year_citnum_dis[ts][year][citN]+=1
 
-                for subj in subjs:
-                    if subj.lower() in sub_foses:
+        open('data/year_citnum_dis_{}.json'.format(tag),'w').write(json.dumps(year_citnum_dis))
+        logging.info('subject year paper citnum dis data saved to data/year_citnum_dis_{}.json'.format(tag))
 
-                        citN = year_total.get(year,0)
-
-                        if citN==0:
-                            continue
-
-                        subj_year_citnum_dis[subj][year][citN]+=1
-                        subj_puby_year_citnum_dis[subj][pubyear][year][citN]+=1
-                        subj_ts_year_citnum_dis[subj][ts][year][citN]+=1
-
-        open('data/subj_year_num.json','w').write(json.dumps(subj_year_num))
-        logging.info('subject year paper num data saved to data/subj_year_num.json')
-
-        open('data/subj_year_citnum_dis.json','w').write(json.dumps(subj_year_citnum_dis))
-        logging.info('subject year paper citnum dis data saved to data/subj_year_citnum_dis.json')
-
-        open('data/subj_puby_year_citnum_dis.json','w').write(json.dumps(subj_puby_year_citnum_dis))
-        logging.info('subject pubyear year paper citnum dis data saved to data/subj_puby_year_citnum_dis.json')
+        open('data/puby_year_citnum_dis_{}.json'.format(tag),'w').write(json.dumps(puby_year_citnum_dis))
+        logging.info('subject pubyear year paper citnum dis data saved to data/puby_year_citnum_dis_{}.json'.format(tag))
 
 
-        open('data/subj_ts_year_citnum_dis.json','w').write(json.dumps(subj_ts_year_citnum_dis))
-        logging.info('subject teamsize year paper citnum dis data saved to data/subj_ts_year_citnum_dis.json')
+        open('data/ts_year_citnum_dis_{}.json'.format(tag),'w').write(json.dumps(ts_year_citnum_dis))
+        logging.info('subject teamsize year paper citnum dis data saved to data/ts_year_citnum_dis_{}.json'.format(tag))
 
         logging.info('done')
 
 ##不同的年代发表的高被引论文的引用次数平均数随着数据规模的变化情况
-def temporal_top_citation_trend_over_datasize():
-    paper_num_dis_over_pubyear()
+def temporal_top_citation_trend_over_datasize(subj,tag):
+    # paper_num_dis_over_pubyear()
     subj_upper_limit_over_year()
 
+    # fig,axes = plt.subplots(4,2,figsize=(10,16))
+
+
+    # for i,subj in enumerate(sorted(year_citnum_dis.keys())):
+
+        
+
+
+    # plt.tight_layout()
+
+    # plt.savefig('fig/subj_citation_upper_limit.png',dpi=400)
+
+    # logging.info('fig saved to fig/subj_citation_upper_limit.png.')
+
+    # year_num = subj_year_num[subj]
+    
+
 ## 不同学科 不同年份的引用次数分布
-def subj_upper_limit_over_year():
+def upper_limit_over_year(subj,tag):
 
     logging.info('loading subj year citnum dis ...')
-    subj_year_citnum_dis = json.loads(open('data/subj_year_citnum_dis.json').read())
+    year_citnum_dis = json.loads(open('data/year_citnum_dis_{}.json'.format(tag)).read())
 
-    subj_year_num = json.loads(open('data/subj_year_num.json').read())
+    year_num = json.loads(open('data/subj_year_num.json').read())[subj]
 
-    fig,axes = plt.subplots(4,2,figsize=(10,16))
+    fig,ax = plt.subplots(figsize=(5,4))
+    year_citnum_dis = year_citnum_dis[subj]
 
+    xs = []
+    ys_10 = []
+    ys_100 = []
+    ys_1000 = []
 
-    for i,subj in enumerate(sorted(subj_year_citnum_dis.keys())):
+    num_t = 0
+    for year in sorted(year_citnum_dis.keys(),key=lambda x:int(x)):
+        # xs.append(int(year))
+        num_t+=year_num[year]
+        xs.append(num_t)
 
-        year_num = subj_year_num[subj]
+        citnum_dis = year_citnum_dis[year]
 
-        ax = axes[i/2,i%2]
+        top10 = topN_mean(citnum_dis,10)
 
-        year_citnum_dis = subj_year_citnum_dis[subj]
+        top100 = topN_mean(citnum_dis,100)
 
-        xs = []
-        ys_10 = []
-        ys_100 = []
-        ys_1000 = []
+        top1000 = topN_mean(citnum_dis,1000)
 
-        num_t = 0
-        for year in sorted(year_citnum_dis.keys(),key=lambda x:int(x)):
-            # xs.append(int(year))
-            num_t+=year_num[year]
-            xs.append(num_t)
+        ys_10.append(top10)
+        ys_100.append(top100)
+        ys_1000.append(top1000)
 
-            citnum_dis = year_citnum_dis[year]
+    curve_fit_plotting(ax,xs,ys_10,'top10')
+    curve_fit_plotting(ax,xs,ys_100,'top100')
+    curve_fit_plotting(ax,xs,ys_1000,'top100')
 
-            top10 = topN_mean(citnum_dis,10)
+    ax.set_title(subj)
 
-            top100 = topN_mean(citnum_dis,100)
+    ax.set_xlabel('dataset size')
 
-            top1000 = topN_mean(citnum_dis,1000)
+    ax.set_ylabel('citation upper limit')
 
-            ys_10.append(top10)
-            ys_100.append(top100)
-            ys_1000.append(top1000)
+    ax.set_xscale('log')
 
-        # curve_fit_plotting(ax,xs,ys_10,'top10')
-        curve_fit_plotting(ax,xs,ys_100,'top100')
-        curve_fit_plotting(ax,xs,ys_1000,'top100')
-
-        ax.set_title(subj)
-
-        ax.set_xlabel('dataset size')
-
-        ax.set_ylabel('citation upper limit')
-
-        ax.set_xscale('log')
-
-        ax.set_yscale('log')
+    ax.set_yscale('log')
 
 
-        ax.legend()
-
+    ax.legend()
 
     plt.tight_layout()
 
-    plt.savefig('fig/subj_citation_upper_limit.png',dpi=400)
+    plt.savefig('fig/subj_citation_upper_limit_{}.png'.format(tag),dpi=400)
 
-    logging.info('fig saved to fig/subj_citation_upper_limit.png.')
+    logging.info('fig saved to fig/subj_citation_upper_limit_{}.png.'.format(tag))
 
 
 
@@ -318,7 +331,7 @@ def paper_num_dis_over_pubyear():
     logging.info('loading subj year paper num ...')
     subj_year_num = json.loads(open('data/subj_year_num.json').read())
 
-    plt.figure(figsize = (5,4))
+    plt.figure(figsize = (6,4))
 
     for subj in sorted(subj_year_num.keys()):
 
@@ -341,7 +354,7 @@ def paper_num_dis_over_pubyear():
 
     plt.yscale('log')
 
-    lgd = plt.legend(loc=9,bbox_to_anchor=(0.5, -0.1), ncol=2)
+    lgd = plt.legend(loc=6,bbox_to_anchor=(0.5, -0.2), ncol=2)
     # plt.legend()
 
     plt.tight_layout()
@@ -359,9 +372,14 @@ def paper_year_total_citnum(year_citnum):
     minY = np.min(years)
     maxY = np.max(years)
 
+    mY = maxY
+    if maxY+1<2018:
+        mY=2018
+
+
     year_total = {}
     total = 0
-    for y in range(minY,maxY+1):
+    for y in range(minY,mY):
         total+= year_citnum.get(str(y),0)
         year_total[int(y)]=total
     return year_total
@@ -369,10 +387,26 @@ def paper_year_total_citnum(year_citnum):
 
 
 if __name__ == '__main__':
-    ## 统计论文引用次数随着时间的变化
-    # stats_citation_count_of_papers()
+
+    ##需要研究的领域的论文id
+    get_paperids_of_subjects()
+
+    subjs = ['computer science','physics','chemistry']
+    tags = ['cs','physics','chemistry']
+
+    for i in range(len(subjs)):
+
+        subj = subjs[i]
+        tag = tags[i]
+
+        ## 统计论文引用次数随着时间的变化
+        stats_citation_count_of_papers(subj,tag)
+        
+        general_top_citation_trend_over_datasize(subj,tag)
+
+        upper_limit_over_year(subj,tag)
 
     ## subj pubyear teamsize over datasize
-    # general_top_citation_trend_over_datasize()
+    # 
 
-    temporal_top_citation_trend_over_datasize()
+    # temporal_top_citation_trend_over_datasize()
