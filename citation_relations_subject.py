@@ -205,7 +205,7 @@ def upper_limit_over_year(subj,tag):
 
     curve_fit_plotting(ax,xs,ys_10,'top10')
     curve_fit_plotting(ax,xs,ys_100,'top100')
-    curve_fit_plotting(ax,xs,ys_1000,'top100')
+    curve_fit_plotting(ax,xs,ys_1000,'top1000')
 
     ax.set_title(subj)
 
@@ -261,11 +261,16 @@ def curve_fit_plotting(ax,xs,ys,label):
 ## 引用次数最高的N篇论文的平均引用次数
 def topN_mean(citnum_dis,N):
 
-    values = citnum_dis.values()
+    cits = []
 
-    total = np.sum(values)
+    for key in citnum_dis.keys():
 
-    topN = sorted(values,key=lambda x:int(x),reverse=True)[:N]
+        num = citnum_dis[key]
+
+        cits.extends([key]*num)
+
+
+    topN = sorted(cits,key=lambda x:int(x),reverse=True)[:N]
 
     mean_of_topNn = np.mean(topN)
 

@@ -121,13 +121,19 @@ def paper_year_total_citnum(year_citnum):
 ## 引用最高的Npercent的论文所占总引用次数的比例
 def top_percent(citnum_dis,percent):
 
-    values = citnum_dis.values()
+    cits = []
 
-    total = np.sum(values)
+    for key in citnum_dis.keys():
 
-    N = int(len(values)*percent)
+        num = citnum_dis[key]
 
-    topN = sorted(values,key=lambda x:int(x),reverse=True)[:N]
+        cits.extends([key]*num)
+
+    total = np.sum(cits)
+
+    N = int(len(cits)*percent)
+
+    topN = sorted(cits,key=lambda x:int(x),reverse=True)[:N]
 
     sum_of_topN = np.sum(topN)
 
@@ -137,18 +143,24 @@ def top_percent(citnum_dis,percent):
 ## 占相同比例的引用次数的从高到低的论文文章分布
 def diversity_of_equal_percentile(citnum_dis,N):
 
-    values = citnum_dis.values()
+    cits = []
 
-    total = np.sum(values)
+    for key in citnum_dis.keys():
 
-    num = len(values)
+        num = citnum_dis[key]
+
+        cits.extends([key]*num)
+
+    total = np.sum(cits)
+
+    num = len(cits)
 
     acc_total = 0
     c_p = 0
     num_of_p = 0
 
     percents = []
-    for v in sorted(values,key=lambda x:int(x),reverse=True):
+    for v in sorted(cits,key=lambda x:int(x),reverse=True):
 
         acc_total+=v
 
