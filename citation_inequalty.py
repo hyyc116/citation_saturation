@@ -48,7 +48,7 @@ def stat_subj_paper_year_citnum():
 
 def top20_percent_trend_over_time():
 
-    subj_paper_year_citnum = json.loads('data/topsubj_paper_year_citnum.json')
+    subj_paper_year_citnum = json.loads(open('data/topsubj_paper_year_citnum.json').read())
 
     subj_type_xys = defaultdict(dict)
 
