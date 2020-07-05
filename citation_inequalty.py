@@ -5,6 +5,8 @@
 
 from basic_config import *
 
+from gini import gini
+
 
 def stat_subj_paper_year_citnum():
 
