@@ -84,8 +84,8 @@ def top20_percent_trend_over_time():
             divs.append(diversity)
 
 
-       subj_type_xys[subj]['top20'] = [xs,top20_percents]
-       subj_type_xys[subj]['div'] = [xs,divs]
+        subj_type_xys[subj]['top20'] = [xs,top20_percents]
+        subj_type_xys[subj]['div'] = [xs,divs]
 
 
     open('data/subj_type_xys.json','w').write(json.dumps(subj_type_xys))

@@ -178,7 +178,7 @@ def upper_limit_over_year(subj,tag):
     year_num = json.loads(open('data/subj_paper_num.json').read())[subj]
 
     fig,ax = plt.subplots(figsize=(5,4))
-    year_citnum_dis = year_citnum_dis[subj]
+    # year_citnum_dis = year_citnum_dis[subj]
 
     xs = []
     ys_10 = []
