@@ -127,7 +127,7 @@ def general_top_citation_trend_over_datasize(subj,tag):
 
         for year in range(pubyear,2016):
             citN = year_total.get(year,0)
-            
+
             if citN==0:
                 continue
 
@@ -175,7 +175,7 @@ def upper_limit_over_year(subj,tag):
     logging.info('loading subj year citnum dis ...')
     year_citnum_dis = json.loads(open('data/year_citnum_dis_{}.json'.format(tag)).read())
 
-    year_num = json.loads(open('data/subj_year_num.json').read())[subj]
+    year_num = json.loads(open('data/subj_paper_num.json').read())[subj]
 
     fig,ax = plt.subplots(figsize=(5,4))
     year_citnum_dis = year_citnum_dis[subj]
