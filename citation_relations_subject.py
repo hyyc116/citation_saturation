@@ -59,7 +59,7 @@ def stats_citation_count_of_papers(subj,tag):
 
     logging.info('start to stat citation relations ...')
 
-    subj_pids = json.loads(open('data/subj_pids.jsom').read())
+    subj_pids = json.loads(open('data/subj_pids.json').read())
 
     ## 需要保证是local citation才行
     # _ids_top_subjects = json.loads(open(''))
@@ -98,57 +98,57 @@ def stats_citation_count_of_papers(subj,tag):
 ##整体领域高被引论文的平均数随着数据规模的变化情况
 def general_top_citation_trend_over_datasize(subj,tag):
 
-        ## paper year
-        paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
+    ## paper year
+    paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
 
-        paper_ts = json.loads(open('data/pid_teamsize.json').read())
+    paper_ts = json.loads(open('data/pid_teamsize.json').read())
 
-        ## 按照学科进行分析
-        pid_year_citnum = json.loads(open('data/pid_year_citnum_{}.json'.format(tag)).read())
+    ## 按照学科进行分析
+    pid_year_citnum = json.loads(open('data/pid_year_citnum_{}.json'.format(tag)).read())
 
-        ## year num count 各学科每年的引用次数分布
-        year_citnum_dis = defaultdict(lambda:defaultdict(int))
-        ## 根据发布年份的引用次数分布
-        puby_year_citnum_dis = defaultdict(lambda:defaultdict(lambda:defaultdict(int)))
+    ## year num count 各学科每年的引用次数分布
+    year_citnum_dis = defaultdict(lambda:defaultdict(int))
+    ## 根据发布年份的引用次数分布
+    puby_year_citnum_dis = defaultdict(lambda:defaultdict(lambda:defaultdict(int)))
 
-        ## 各学科中 不同 teamsize随着时间的变化
-        ts_year_citnum_dis = defaultdict(lambda:defaultdict(lambda:defaultdict(int)))
+    ## 各学科中 不同 teamsize随着时间的变化
+    ts_year_citnum_dis = defaultdict(lambda:defaultdict(lambda:defaultdict(int)))
 
-        for pid in pid_year_citnum.keys():
+    for pid in pid_year_citnum.keys():
 
-            pubyear = int(paper_year[pid])
+        pubyear = int(paper_year[pid])
 
-            if pubyear>= 2016:
-                 continue
+        if pubyear>= 2016:
+             continue
 
-            ts = paper_ts.get(pid,1)
+        ts = paper_ts.get(pid,1)
 
-            year_total =  paper_year_total_citnum(pid_year_citnum[pid])
+        year_total =  paper_year_total_citnum(pid_year_citnum[pid])
 
-            for year in range(pubyear,2016):
+        for year in range(pubyear,2016):
 
-                for subj in topsubjs:
+            for subj in topsubjs:
 
-                    citN = year_total.get(year,0)
+                citN = year_total.get(year,0)
 
-                    if citN==0:
-                        continue
+                if citN==0:
+                    continue
 
-                    year_citnum_dis[year][citN]+=1
-                    puby_year_citnum_dis[pubyear][year][citN]+=1
-                    ts_year_citnum_dis[ts][year][citN]+=1
+                year_citnum_dis[year][citN]+=1
+                puby_year_citnum_dis[pubyear][year][citN]+=1
+                ts_year_citnum_dis[ts][year][citN]+=1
 
-        open('data/year_citnum_dis_{}.json'.format(tag),'w').write(json.dumps(year_citnum_dis))
-        logging.info('subject year paper citnum dis data saved to data/year_citnum_dis_{}.json'.format(tag))
+    open('data/year_citnum_dis_{}.json'.format(tag),'w').write(json.dumps(year_citnum_dis))
+    logging.info('subject year paper citnum dis data saved to data/year_citnum_dis_{}.json'.format(tag))
 
-        open('data/puby_year_citnum_dis_{}.json'.format(tag),'w').write(json.dumps(puby_year_citnum_dis))
-        logging.info('subject pubyear year paper citnum dis data saved to data/puby_year_citnum_dis_{}.json'.format(tag))
+    open('data/puby_year_citnum_dis_{}.json'.format(tag),'w').write(json.dumps(puby_year_citnum_dis))
+    logging.info('subject pubyear year paper citnum dis data saved to data/puby_year_citnum_dis_{}.json'.format(tag))
 
 
-        open('data/ts_year_citnum_dis_{}.json'.format(tag),'w').write(json.dumps(ts_year_citnum_dis))
-        logging.info('subject teamsize year paper citnum dis data saved to data/ts_year_citnum_dis_{}.json'.format(tag))
+    open('data/ts_year_citnum_dis_{}.json'.format(tag),'w').write(json.dumps(ts_year_citnum_dis))
+    logging.info('subject teamsize year paper citnum dis data saved to data/ts_year_citnum_dis_{}.json'.format(tag))
 
-        logging.info('done')
+    logging.info('done')
 
 ##不同的年代发表的高被引论文的引用次数平均数随着数据规模的变化情况
 def temporal_top_citation_trend_over_datasize(subj,tag):
@@ -273,8 +273,6 @@ def topN_mean(citnum_dis,N):
     mean_of_topNn = np.mean(topN)
 
     return mean_of_topNn
-
-
 
 
 
