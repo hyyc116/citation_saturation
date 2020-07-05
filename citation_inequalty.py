@@ -46,6 +46,76 @@ def stat_subj_paper_year_citnum():
     logging.info('data saved to data/topsubj_paper_year_citnum.json.')
 
 
+def top20_percent_trend_over_time():
+
+    subj_paper_year_citnum = json.loads('data/topsubj_paper_year_citnum.json')
+
+    subj_type_xys = defaultdict(dict)
+
+    for subj in subj_paper_year_citnum.keys():
+
+        year_citnum_dis = defaultdict(lambda:defaultdict(int))
+        for pid in subj_paper_year_citnum[subj].keys():
+
+            year_citnum = subj_paper_year_citnum[subj][pid]
+
+            year_total = paper_year_total_citnum(year_citnum)
+
+            for year in year_total.keys():
+
+                year_citnum_dis[year][year_total[year]]+=1
+
+        ## 每年的引用次数分布
+        xs = []
+        top20_percents = []
+
+        divs = []
+        for year in sorted(year_citnum_dis.keys(),key=lambda x:int(x)):
+
+            citnum_dis = year_citnum_dis[year]
+
+            top_percent = top_percent(citnum_dis,0.2)
+
+            xs.append(year)
+            top20_percents.append(percent)
+
+            percentiel_precents,diversity = diversity_of_equal_percentile(citnum_dis,10)
+
+            divs.append(diversity)
+
+
+       subj_type_xys[subj]['top20'] = [xs,top20_percents]
+       subj_type_xys[subj]['div'] = [xs,divs]
+
+
+    open('data/subj_type_xys.json','w').write(json.dumps(subj_type_xys))
+
+    logging.info('data saved to data/subj_type_xys.json.')
+
+
+            
+def paper_year_total_citnum(year_citnum):
+
+    years = [int(year) for year in year_citnum.keys()]
+
+    minY = np.min(years)
+    maxY = np.max(years)
+
+    mY = maxY
+    if maxY+1<2018:
+        mY=2018
+
+
+    year_total = {}
+    total = 0
+    for y in range(minY,mY):
+        total+= year_citnum.get(str(y),0)
+        year_total[int(y)]=total
+    return year_total
+
+
+
+
 ## 引用最高的Npercent的论文所占总引用次数的比例
 def top_percent(citnum_dis,percent):
 
@@ -101,7 +171,9 @@ def diversity_of_equal_percentile(citnum_dis,N):
 
 
 if __name__ == '__main__':
-    stat_subj_paper_year_citnum()
+    # stat_subj_paper_year_citnum()
+
+    top20_percent_trend_over_time()
 
 
 
