@@ -126,17 +126,14 @@ def general_top_citation_trend_over_datasize(subj,tag):
         year_total =  paper_year_total_citnum(pid_year_citnum[pid])
 
         for year in range(pubyear,2016):
+            citN = year_total.get(year,0)
+            
+            if citN==0:
+                continue
 
-            for subj in topsubjs:
-
-                citN = year_total.get(year,0)
-
-                if citN==0:
-                    continue
-
-                year_citnum_dis[year][citN]+=1
-                puby_year_citnum_dis[pubyear][year][citN]+=1
-                ts_year_citnum_dis[ts][year][citN]+=1
+            year_citnum_dis[year][citN]+=1
+            puby_year_citnum_dis[pubyear][year][citN]+=1
+            ts_year_citnum_dis[ts][year][citN]+=1
 
     open('data/year_citnum_dis_{}.json'.format(tag),'w').write(json.dumps(year_citnum_dis))
     logging.info('subject year paper citnum dis data saved to data/year_citnum_dis_{}.json'.format(tag))
@@ -340,10 +337,10 @@ def paper_year_total_citnum(year_citnum):
 if __name__ == '__main__':
 
     ##需要研究的领域的论文id
-    get_paperids_of_subjects()
+    # get_paperids_of_subjects()
 
-    subjs = ['computer science','physics','chemistry']
-    tags = ['cs','physics','chemistry']
+    subjs = ['computer science','physics','chemistry','medicine','art','biology']
+    tags = ['cs','physics','chemistry','medicine','art','biology']
 
     for i in range(len(subjs)):
 
