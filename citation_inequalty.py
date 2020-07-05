@@ -74,10 +74,10 @@ def top20_percent_trend_over_time():
 
             citnum_dis = year_citnum_dis[year]
 
-            top_percent = top_percent(citnum_dis,0.2)
+            tp = top_percent(citnum_dis,0.2)
 
             xs.append(year)
-            top20_percents.append(percent)
+            top20_percents.append(tp)
 
             percentiel_precents,diversity = diversity_of_equal_percentile(citnum_dis,10)
 
