@@ -42,7 +42,7 @@ def stat_subj_paper_year_citnum():
         for subj in sameset:
             subj_paper_year_citnum[subj][pid][citing_year]+=1
 
-    open('data/topsubj_paper_year_citnum.json','w').write(jsom.dumps(subj_paper_year_citnum))
+    open('data/topsubj_paper_year_citnum.json','w').write(json.dumps(subj_paper_year_citnum))
     logging.info('data saved to data/topsubj_paper_year_citnum.json.')
 
 
