@@ -34,7 +34,7 @@ def stat_subj_paper_year_citnum():
         citing_subjs = pid_topsubj[citing_id]
 
         ##计算的是领域内的引用
-        sameset =  list(set(subj) & set(citing_subjs))
+        sameset =  list(set(subjs) & set(citing_subjs))
 
         if len(sameset)==0:
             continue
