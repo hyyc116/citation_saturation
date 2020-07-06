@@ -95,6 +95,48 @@ def top20_percent_trend_over_time():
     logging.info('data saved to data/subj_type_xys.json.')
 
 
+def plot_diversity_figs():
+
+
+    subj_type_xys = json.loads(open('subj_type_xys.json').read())
+
+    fig,axes = plt.subplots(1,2,figsize=(10,4))
+
+    ax = axes[0]
+    for i,subj in enumerate(subj_type_xys.keys()):
+
+        xs,top20_percents = subj_type_xys[subj]['top20']
+
+        ax.plot(xs,top20_percents,label='{}'.format(subj))
+
+
+    ax.set_title('top 20% citation percentage')
+
+    ax.set_xlabel('year')
+
+    ax.set_ylabel('percentage')
+
+
+    ax = axes[1]
+    for i,subj in enumerate(subj_type_xys.keys()):
+
+        xs,top20_percents = subj_type_xys[subj]['div']
+
+        ax.plot(xs,top20_percents,label='{}'.format(subj))
+
+
+    ax.set_title('diversity')
+
+    ax.set_xlabel('year')
+
+    ax.set_ylabel('diversity')
+
+
+    plt.tight_layout()
+
+    plt.savefig('me.png',dpi=200)
+
+
             
 def paper_year_total_citnum(year_citnum):
 
@@ -182,12 +224,13 @@ def diversity_of_equal_percentile(citnum_dis,N):
     return percents,diversity
 
 
-
-
 if __name__ == '__main__':
     # stat_subj_paper_year_citnum()
 
-    top20_percent_trend_over_time()
+    # top20_percent_trend_over_time()
+
+
+    plot_diversity_figs()
 
 
 
