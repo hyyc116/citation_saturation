@@ -116,7 +116,7 @@ def plot_diversity_figs():
 
     ax.set_ylabel('percentage')
 
-    lgd1 = ax.legend(loc=6,bbox_to_anchor=(0.5, -0.2), ncol=2)
+    lgd1 = ax.legend(loc=6,bbox_to_anchor=(0.2, -0.25), ncol=2)
 
 
     ax = axes[1]
