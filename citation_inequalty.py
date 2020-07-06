@@ -163,13 +163,11 @@ def diversity_of_equal_percentile(citnum_dis,N):
     for v in sorted(cits,key=lambda x:int(x),reverse=True):
 
         acc_total+=v
-
+        num_of_p+=1
         ##
         if acc_total/float(total)-c_p>=1/float(N):
 
             c_p+=1/float(N)
-
-            num_of_p+=1
 
             percents.append(num_of_p/float(num))
 
