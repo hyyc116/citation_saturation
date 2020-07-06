@@ -100,7 +100,7 @@ def plot_diversity_figs():
 
     subj_type_xys = json.loads(open('subj_type_xys.json').read())
 
-    fig,axes = plt.subplots(1,2,figsize=(10,4))
+    fig,axes = plt.subplots(1,2,figsize=(10,5))
 
     ax = axes[0]
     for i,subj in enumerate(subj_type_xys.keys()):
@@ -115,6 +115,8 @@ def plot_diversity_figs():
     ax.set_xlabel('year')
 
     ax.set_ylabel('percentage')
+
+    lgd1 = ax.legend(loc=6,bbox_to_anchor=(0.5, -0.2), ncol=2)
 
 
     ax = axes[1]
@@ -131,8 +133,10 @@ def plot_diversity_figs():
 
     ax.set_ylabel('diversity')
 
+    lgd2 = ax.legend(loc=6,bbox_to_anchor=(0.5, -0.2), ncol=2)
 
-    plt.tight_layout()
+
+    plt.tight_layout(,additional_artists=[lgd],bbox_inches="tight")
 
     plt.savefig('me.png',dpi=200)
 
