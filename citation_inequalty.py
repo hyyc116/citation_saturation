@@ -138,7 +138,7 @@ def plot_diversity_figs():
 
     plt.tight_layout()
 
-    plt.savefig('me.png',dpi=400,additional_artists=[lgd],bbox_inches="tight")
+    plt.savefig('me.png',dpi=400,additional_artists=[lgd1,lgd2],bbox_inches="tight")
 
 
             
