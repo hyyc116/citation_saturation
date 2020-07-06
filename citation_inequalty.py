@@ -178,6 +178,8 @@ def diversity_of_equal_percentile(citnum_dis,N):
     ##得到不同社区的文章比例，后计算不同percentile的论文的diversity
 
     diversity = gini(percents)
+    print(percents)
+    print(diversity)
 
     return percents,diversity
 

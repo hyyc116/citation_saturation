@@ -27,5 +27,5 @@ def gini(array):
 
 
 if __name__ == '__main__':
-    print gini(np.array([1.0,0,0]))
-    print gini(np.array([1.0,1.0,1.0]))
+    # print gini(np.array([1.0,0,0]))
+    print(gini(np.array([0.1,0.5,0.2,0.1])))
