@@ -100,7 +100,7 @@ def plot_diversity_figs():
 
     subj_type_xys = json.loads(open('subj_type_xys.json').read())
 
-    fig,axes = plt.subplots(1,2,figsize=(10,5))
+    fig,axes = plt.subplots(1,2,figsize=(12,6))
 
     ax = axes[0]
     for i,subj in enumerate(subj_type_xys.keys()):
