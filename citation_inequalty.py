@@ -107,7 +107,7 @@ def plot_diversity_figs():
 
         xs,top20_percents = subj_type_xys[subj]['top20']
 
-        ax.plot(xs,top20_percents,label='{}'.format(subj))
+        ax.plot(xs[:-2],top20_percents[:-2],label='{}'.format(subj))
 
 
     ax.set_title('top 20% citation percentage')
@@ -124,7 +124,7 @@ def plot_diversity_figs():
 
         xs,top20_percents = subj_type_xys[subj]['div']
 
-        ax.plot(xs,top20_percents,label='{}'.format(subj))
+        ax.plot(xs[:-2],top20_percents[:-2],label='{}'.format(subj))
 
 
     ax.set_title('diversity')
@@ -136,9 +136,9 @@ def plot_diversity_figs():
     lgd2 = ax.legend(loc=6,bbox_to_anchor=(0.5, -0.2), ncol=2)
 
 
-    plt.tight_layout(,additional_artists=[lgd],bbox_inches="tight")
+    plt.tight_layout()
 
-    plt.savefig('me.png',dpi=200)
+    plt.savefig('me.png',dpi=400,additional_artists=[lgd],bbox_inches="tight")
 
 
             
