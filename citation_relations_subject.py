@@ -62,7 +62,7 @@ def stats_citation_dis_over_years():
 
     paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
 
-    subj_pids = json.loads(open('data/subj_pids').read())
+    subj_pids = json.loads(open('data/subj_pids.json').read())
 
     pid_subjs = defaultdict(set)
     for subj in subj_pids.keys():
