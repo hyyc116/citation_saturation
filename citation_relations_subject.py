@@ -103,7 +103,7 @@ def stats_citation_dis_over_years():
             ##最高领域
             for topsubj in pid_topsubjs[pid]:
                 ## 引证文献和被引文献必须是同一领域的论文
-                if topsubj not in set(pid_topsubj[citing_id]):
+                if topsubj not in set(pid_topsubjs[citing_id]):
                     continue
 
                 if citing_year<=year and cited_year<=year:
