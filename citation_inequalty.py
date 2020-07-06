@@ -133,12 +133,12 @@ def plot_diversity_figs():
 
     ax.set_ylabel('diversity')
 
-    lgd2 = ax.legend(loc=6,bbox_to_anchor=(0.5, -0.2), ncol=2)
+    # lgd2 = ax.legend()
 
 
     plt.tight_layout()
 
-    plt.savefig('me.png',dpi=400,additional_artists=[lgd1,lgd2],bbox_inches="tight")
+    plt.savefig('me.png',dpi=400,additional_artists=[lgd1],bbox_inches="tight")
 
 
             
