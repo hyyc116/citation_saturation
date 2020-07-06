@@ -127,7 +127,7 @@ def top_percent(citnum_dis,percent):
 
         num = citnum_dis[key]
 
-        cits.extend([key]*num)
+        cits.extend([int(key)]*num)
 
     total = np.sum(cits)
 
@@ -149,7 +149,7 @@ def diversity_of_equal_percentile(citnum_dis,N):
 
         num = citnum_dis[key]
 
-        cits.extend([key]*num)
+        cits.extend([int(key)]*num)
 
     total = np.sum(cits)
 

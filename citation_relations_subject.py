@@ -267,7 +267,7 @@ def topN_mean(citnum_dis,N):
 
         num = citnum_dis[key]
 
-        cits.extend([key]*num)
+        cits.extend([int(key)]*num)
 
 
     topN = sorted(cits,key=lambda x:int(x),reverse=True)[:N]
