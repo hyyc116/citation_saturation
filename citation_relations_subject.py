@@ -51,6 +51,86 @@ def get_paperids_of_subjects():
     for subj in subj_ids.keys():
         logging.info('there are {} papers in subj {}'.format(len(subj_ids[subj]),subj))
 
+
+def stats_citation_dis_over_years():
+
+    sub_foses = set(['computer science','physics','chemistry','medicine','art','biology'])
+
+    # pid_subjs = json.loads(open('../cascade_temporal_analysis/data/_ids_subjects.json').read())
+
+    pid_topsubjs = json.loads(open('../cascade_temporal_analysis/data/_ids_top_subjects.json').read())
+
+    paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
+
+    subj_pids = json.loads(open('data/subj_pids').read())
+
+    pid_subjs = defaultdict(set)
+    for subj in subj_pids.keys():
+        for pid in subj_pids[subj]:
+            pid_subjs[pid].add(subj)
+
+
+    years = range(1900,2019)
+
+    topsubj_year_pid_citnum = defaultdict(lambda:defaultdict(lambda:defaultdict(int)))
+    subj_year_pid_citnum = defaultdict(lambda:defaultdict(lambda:defaultdict(int)))
+
+
+    progress = 0
+
+    for line in open('../cascade_temporal_analysis/data/pid_cits_ALL.txt'):
+
+        progress+=1
+
+        if progress%10000000==0:
+            logging.info('reading %d citation relations....' % progress)
+
+        line = line.strip()
+
+        pid,citing_id = line.split("\t")
+
+        if paper_year.get(pid,None) is None or paper_year.get(citing_id,None) is None:
+            continue
+
+        if pid_topsubjs.get(pid,None) is None or pid_topsubjs.get(citing_id,None) is None:
+            continue
+
+
+        citing_year = int(paper_year[citing_id])
+        cited_year = int(paper_year[pid])
+
+        for year in years:
+            ##最高领域
+            for topsubj in pid_topsubjs[pid]:
+                ## 引证文献和被引文献必须是同一领域的论文
+                if topsubj not in set(pid_topsubj[citing_id]):
+                    continue
+
+                if citing_year<=year and cited_year<=year:
+                    #这个领域小于该年的引用关系进行统计
+                    topsubj_year_pid_citnum[topsubj][year][pid]+=1
+
+            ## 每个领域选取一个子领域
+            for subj in pid_subjs[pid]:
+
+                if subj.lower() not in set(pid_subjs[citing_id]):
+                    continue
+
+                if citing_year<=year and cited_year<=year:
+                    #这个领域小于该年的引用关系进行统计
+                    subj_year_pid_citnum[subj][year][pid]+=1
+
+
+    open('data/topsubj_year_pid_citnum.json','w').write(json.dumps(topsubj_year_pid_citnum))
+    logging.info('data saved to data/topsubj_year_pid_citnum.json.')
+
+
+    open('data/subj_year_pid_citnum.json','w').write(json.dumps(subj_year_pid_citnum))
+    logging.info('data saved to data/subj_year_pid_citnum.json.')
+
+
+
+
 ##统计wos所有论文的citation count随着时间的变化情况
 def stats_citation_count_of_papers(subj,tag):
 
@@ -344,22 +424,25 @@ if __name__ == '__main__':
     ##需要研究的领域的论文id
     # get_paperids_of_subjects()
 
-    subjs = ['computer science','physics','chemistry','medicine','art','biology']
-    tags = ['cs','physics','chemistry','medicine','art','biology']
+    # subjs = ['computer science','physics','chemistry','medicine','art','biology']
+    # tags = ['cs','physics','chemistry','medicine','art','biology']
 
-    for i in range(len(subjs)):
+    # for i in range(len(subjs)):
 
-        subj = subjs[i]
-        tag = tags[i]
+    #     subj = subjs[i]
+    #     tag = tags[i]
 
-        ## 统计论文引用次数随着时间的变化
-        stats_citation_count_of_papers(subj,tag)
+    #     ## 统计论文引用次数随着时间的变化
+    #     stats_citation_count_of_papers(subj,tag)
         
-        general_top_citation_trend_over_datasize(subj,tag)
+    #     general_top_citation_trend_over_datasize(subj,tag)
 
-        upper_limit_over_year(subj,tag)
+    #     upper_limit_over_year(subj,tag)
 
     ## subj pubyear teamsize over datasize
     # 
 
     # temporal_top_citation_trend_over_datasize()
+
+
+    stats_citation_dis_over_years()
