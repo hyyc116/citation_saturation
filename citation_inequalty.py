@@ -219,6 +219,8 @@ def top_percent_of_total(pid_citnum,percent):
 
     values = pid_citnum.values()
 
+    N = int(len(values)*percent)
+
     topN = sorted(values,key=lambda x:int(x),reverse=True)[:N]
 
     sum_of_topN = np.sum(topN)
