@@ -94,6 +94,9 @@ def top20_percent_trend_over_time():
         ty_divs = []
         for year in sorted(year_pid_total.keys(),key=lambda x:int(x)):
 
+            if int(year)<1950:
+                continue
+
             pid_citnum = year_pid_total[year]
 
             ty_pid_citnum = subj_year_paper_citnum[subj][year]
