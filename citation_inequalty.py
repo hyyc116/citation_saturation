@@ -91,7 +91,7 @@ def top20_percent_trend_over_time():
         top20_percents_ny = []
 
         divs = []
-        ny_divs = []
+        ty_divs = []
         for year in sorted(year_pid_total.keys(),key=lambda x:int(x)):
 
             pid_citnum = year_pid_total[year]
