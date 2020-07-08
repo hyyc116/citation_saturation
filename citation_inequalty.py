@@ -294,10 +294,10 @@ def diversity_of_equal_percentile(pid_citnum,N):
 if __name__ == '__main__':
     # stat_subj_paper_year_citnum()
 
-    # top20_percent_trend_over_time()
+    top20_percent_trend_over_time()
 
 
-    plot_diversity_figs()
+    # plot_diversity_figs()
 
 
 
