@@ -7,6 +7,7 @@ from basic_config import *
 
 from gini import gini
 
+import powerlaw
 
 
 def stat_subj_paper_year_citnum():
@@ -62,7 +63,6 @@ def top20_percent_trend_over_time():
 
     subj_year_paper_citnum = defaultdict(lambda:defaultdict(lambda:defaultdict(int)))
 
-    import powerlaw
 
 
     subj_type_xys = defaultdict(dict)
