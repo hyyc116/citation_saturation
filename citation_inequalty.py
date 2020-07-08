@@ -117,6 +117,8 @@ def top20_percent_trend_over_time():
             ## 该年份在下一年top20获得的引用次数比例
             tp_ny = top_percent_of_ny(pid_citnum,ny_pid_citnum,0.2)
 
+            top20_percents_ny.append(tp_ny)
+
             xs.append(year)
             top20_percents.append(tp)
 
@@ -145,11 +147,11 @@ def plot_diversity_figs():
 
     subj_type_xys = json.loads(open('subj_type_xys.json').read())
 
-    fig,axes = plt.subplots(1,2,figsize=(17,6))
+    fig,axes = plt.subplots(2,2,figsize=(17,12))
 
 
 
-    ax = axes[0]
+    ax = axes[0,0]
     for i,subj in enumerate(subj_type_xys.keys()):
 
         xs = subj_type_xys[subj]['xs']
@@ -167,7 +169,7 @@ def plot_diversity_figs():
 
 
 
-    ax = axes[1]
+    ax = axes[0,1]
     for i,subj in enumerate(subj_type_xys.keys()):
 
         xs = subj_type_xys[subj]['xs']
@@ -184,6 +186,37 @@ def plot_diversity_figs():
 
     # lgd2 = ax.legend()
     lgd1 = ax.legend(loc=7,bbox_to_anchor=(1.5, 0.5), ncol=1,fontsize=10)
+
+    ax = axes[1,0]
+    for i,subj in enumerate(subj_type_xys.keys()):
+
+        xs = subj_type_xys[subj]['xs']
+        divs = subj_type_xys[subj]['top20']
+
+        ax.plot(xs,divs,label='{}'.format(subj))
+
+
+    ax.set_title('top 20% citaation percentage over next year')
+
+    ax.set_xlabel('year')
+
+    ax.set_ylabel('percentage')
+
+
+    ax = axes[1,1]
+    for i,subj in enumerate(subj_type_xys.keys()):
+
+        xs = subj_type_xys[subj]['xs']
+        divs = subj_type_xys[subj]['powlaw']
+
+        ax.plot(xs,divs,label='{}'.format(subj))
+
+
+    ax.set_title('$\\alpha$ of power-law distribution')
+
+    ax.set_xlabel('year')
+
+    ax.set_ylabel('$\\alpha$')
 
 
 
@@ -236,7 +269,7 @@ def powlaw_of_total(pid_citnum):
 
     values = pid_citnum.values()
 
-    results=powerlaw.Fit(values)
+    results=powerlaw.Fit(values,xmin=10)
 
     return results.power_law.alpha
 
