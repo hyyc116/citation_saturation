@@ -238,7 +238,7 @@ def powlaw_of_total(pid_citnum):
 
     results=powerlaw.Fit(values)
 
-    return results.powerlaw.alpha
+    return results.power_law.alpha
 
     
 
