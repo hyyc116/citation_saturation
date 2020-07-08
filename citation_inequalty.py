@@ -91,7 +91,7 @@ def top20_percent_trend_over_time():
         top20_percents_ny = []
 
         divs = []
-        ty_divs = []
+        # ty_divs = []
         for year in sorted(year_pid_total.keys(),key=lambda x:int(x)):
 
             if int(year)<1950:
@@ -116,14 +116,14 @@ def top20_percent_trend_over_time():
 
             divs.append(diversity)
 
-            ty_divs.append(diversity_of_equal_percentile(ty_pid_citnum,10)[1])
+            # ty_divs.append(diversity_of_equal_percentile(ty_pid_citnum,10)[1])
 
 
         subj_type_xys[subj]['xs'] = xs
         subj_type_xys[subj]['ny_top20'] = divs
         subj_type_xys[subj]['top20'] = top20_percents
         subj_type_xys[subj]['div'] = divs
-        subj_type_xys[subj]['ty_div'] = ty_divs
+        # subj_type_xys[subj]['ty_div'] = ty_divs
 
 
 

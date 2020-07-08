@@ -285,13 +285,13 @@ def year_dis(tag):
     for pid in paper_ids:
         year_total[int(paper_year[pid])]+=1
 
-        xs = []
-        ys = []
+    xs = []
+    ys = []
 
-        for year in sorted(year_total.keys()):
+    for year in sorted(year_total.keys()):
 
-            xs.append(year)
-            ys.append(year_total[year])
+        xs.append(year)
+        ys.append(year_total[year])
 
 
     ys_t = [np.sum(ys[:i+1]) for i in range(len(ys))]
