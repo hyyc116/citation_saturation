@@ -7,6 +7,8 @@ from basic_config import *
 
 from gini import gini
 
+import powerlaw
+
 
 def stat_subj_paper_year_citnum():
 
@@ -89,6 +91,7 @@ def top20_percent_trend_over_time():
         xs = []
         top20_percents = []
         top20_percents_ny = []
+        alphas = []
 
         divs = []
         # ty_divs = []
@@ -106,6 +109,10 @@ def top20_percent_trend_over_time():
             ## 年份之前所有论文的引用次数比例
             tp = top_percent_of_total(pid_citnum,0.2)
 
+            alpha = powlaw_of_total(pid_citnum)
+
+            alphas.append(alpha)
+
             ## 该年份在下一年top20获得的引用次数比例
             tp_ny = top_percent_of_ny(pid_citnum,ny_pid_citnum,0.2)
 
@@ -118,11 +125,11 @@ def top20_percent_trend_over_time():
 
             # ty_divs.append(diversity_of_equal_percentile(ty_pid_citnum,10)[1])
 
-
         subj_type_xys[subj]['xs'] = xs
         subj_type_xys[subj]['ny_top20'] = top20_percents_ny
         subj_type_xys[subj]['top20'] = top20_percents
         subj_type_xys[subj]['div'] = divs
+        subj_type_xys[subj]['powlaw'] = alphas
         # subj_type_xys[subj]['ty_div'] = ty_divs
 
 
@@ -157,7 +164,7 @@ def plot_diversity_figs():
 
     ax.set_ylabel('percentage')
 
-    lgd1 = ax.legend(loc=6,bbox_to_anchor=(0, -0.25), ncol=2)
+    lgd1 = ax.legend(loc=4,bbox_to_anchor=(0, -0.25), ncol=2)
 
 
     ax = axes[1]
@@ -220,6 +227,18 @@ def top_percent_of_ny(pid_citnum,ny_pid_citnum,percent):
 
     return float(sum_of_topN)/np.sum(ny_pid_citnum.values())
 
+
+
+## 引用最高的Npercent的论文所占总引用次数的比例
+def powlaw_of_total(pid_citnum):
+
+    values = pid_citnum.values()
+
+    results=powerlaw.fit(values)
+
+    return results.powerlaw.alpha
+
+    
 
 
 ## 引用最高的Npercent的论文所占总引用次数的比例
