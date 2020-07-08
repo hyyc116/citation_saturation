@@ -7,7 +7,6 @@ from basic_config import *
 
 from gini import gini
 
-import powerlaw
 
 
 def stat_subj_paper_year_citnum():
@@ -62,6 +61,8 @@ def top20_percent_trend_over_time():
     subj_paper_year_citnum = json.loads(open('data/topsubj_paper_year_citnum.json').read())
 
     subj_year_paper_citnum = defaultdict(lambda:defaultdict(lambda:defaultdict(int)))
+
+    import powerlaw
 
 
     subj_type_xys = defaultdict(dict)
@@ -142,9 +143,9 @@ def top20_percent_trend_over_time():
 def plot_diversity_figs():
 
 
-    subj_type_xys = json.loads(open('data/subj_type_xys.json').read())
+    subj_type_xys = json.loads(open('subj_type_xys.json').read())
 
-    fig,axes = plt.subplots(1,2,figsize=(12,6))
+    fig,axes = plt.subplots(1,2,figsize=(17,6))
 
 
 
@@ -164,7 +165,6 @@ def plot_diversity_figs():
 
     ax.set_ylabel('percentage')
 
-    lgd1 = ax.legend(loc=4,bbox_to_anchor=(0, -0.25), ncol=2)
 
 
     ax = axes[1]
@@ -183,6 +183,8 @@ def plot_diversity_figs():
     ax.set_ylabel('diversity')
 
     # lgd2 = ax.legend()
+    lgd1 = ax.legend(loc=7,bbox_to_anchor=(1.5, 0.5), ncol=1,fontsize=10)
+
 
 
     plt.tight_layout()
@@ -234,7 +236,7 @@ def powlaw_of_total(pid_citnum):
 
     values = pid_citnum.values()
 
-    results=powerlaw.fit(values)
+    results=powerlaw.Fit(values)
 
     return results.powerlaw.alpha
 

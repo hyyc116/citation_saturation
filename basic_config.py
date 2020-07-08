@@ -18,7 +18,7 @@ from itertools import combinations
 import pylab
 import itertools
 from mpl_toolkits.mplot3d import Axes3D
-from scipy.interpolate import spline
+# from scipy.interpolate import spline
 from multiprocessing.dummy import Pool as ThreadPool
 from networkx.algorithms import isomorphism
 from matplotlib import cm as CM
@@ -32,7 +32,7 @@ from matplotlib.colors import LogNorm
 from matplotlib.colors import LinearSegmentedColormap
 from networkx.algorithms.core import core_number
 from networkx.algorithms.core import k_core
-import psycopg2
+# import psycopg2
 from cycler import cycler
 import statsmodels.api as sm
 lowess = sm.nonparametric.lowess
