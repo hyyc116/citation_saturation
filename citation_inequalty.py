@@ -120,7 +120,7 @@ def top20_percent_trend_over_time():
 
 
         subj_type_xys[subj]['xs'] = xs
-        subj_type_xys[subj]['ny_top20'] = divs
+        subj_type_xys[subj]['ny_top20'] = top20_percents_ny
         subj_type_xys[subj]['top20'] = top20_percents
         subj_type_xys[subj]['div'] = divs
         # subj_type_xys[subj]['ty_div'] = ty_divs
@@ -135,16 +135,20 @@ def top20_percent_trend_over_time():
 def plot_diversity_figs():
 
 
-    subj_type_xys = json.loads(open('subj_type_xys.json').read())
+    subj_type_xys = json.loads(open('data/subj_type_xys.json').read())
 
     fig,axes = plt.subplots(1,2,figsize=(12,6))
+
+
 
     ax = axes[0]
     for i,subj in enumerate(subj_type_xys.keys()):
 
-        xs,top20_percents = subj_type_xys[subj]['top20']
+        xs = subj_type_xys[subj]['xs']
+        top20_percents = subj_type_xys[subj]['top20']
 
-        ax.plot(xs[:-2],top20_percents[:-2],label='{}'.format(subj))
+
+        ax.plot(xs,top20_percents,label='{}'.format(subj))
 
 
     ax.set_title('top 20% citation percentage')
@@ -153,15 +157,16 @@ def plot_diversity_figs():
 
     ax.set_ylabel('percentage')
 
-    lgd1 = ax.legend(loc=6,bbox_to_anchor=(0.2, -0.25), ncol=2)
+    lgd1 = ax.legend(loc=6,bbox_to_anchor=(0, -0.25), ncol=2)
 
 
     ax = axes[1]
     for i,subj in enumerate(subj_type_xys.keys()):
 
-        xs,top20_percents = subj_type_xys[subj]['div']
+        xs = subj_type_xys[subj]['xs']
+        divs = subj_type_xys[subj]['div']
 
-        ax.plot(xs[:-2],top20_percents[:-2],label='{}'.format(subj))
+        ax.plot(xs,divs,label='{}'.format(subj))
 
 
     ax.set_title('diversity')
@@ -270,10 +275,10 @@ def diversity_of_equal_percentile(pid_citnum,N):
 if __name__ == '__main__':
     # stat_subj_paper_year_citnum()
 
-    top20_percent_trend_over_time()
+    # top20_percent_trend_over_time()
 
 
-    # plot_diversity_figs()
+    plot_diversity_figs()
 
 
 
