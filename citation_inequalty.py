@@ -434,7 +434,7 @@ def field_year_zero_percentage():
 if __name__ == '__main__':
     # stat_subj_paper_year_citnum()
 
-    top20_percent_trend_over_time()
+    # top20_percent_trend_over_time()
 
     field_year_zero_percentage()
 
