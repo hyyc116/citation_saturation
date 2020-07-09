@@ -523,7 +523,7 @@ def plot_cit_dis_with_power_law(pid_citnum,ax,c,label):
 
     fit=powerlaw.Fit(values,xmin=(1,50))
 
-    fit.plot_pdf(c=c,linewidth = 2,ax=ax,label=label)
+    fit.plot_pdf(c=c,linewidth=2,ax=ax,label=label)
     fit.power_law.plot_pdf(c=c,linewidth=2,ax=ax,linestyle='--')
 
 
