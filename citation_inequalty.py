@@ -485,17 +485,17 @@ def plot_citation_of_subj():
 
     ## year  2000 2005 2010
 
-    _2000_pid_citnum = topsubj_year_pid_citnum['Physical Sciences']['2000']
+    _2000_pid_citnum = topsubj_year_pid_citnum['Physical Sciences']['1960']
 
-    _2005_pid_citnum = topsubj_year_pid_citnum['Physical Sciences']['2005']
+    _2005_pid_citnum = topsubj_year_pid_citnum['Physical Sciences']['1980']
 
-    _2010_pid_citnum = topsubj_year_pid_citnum['Physical Sciences']['2010']
+    _2010_pid_citnum = topsubj_year_pid_citnum['Physical Sciences']['2000']
 
     fig,ax = plt.subplots(figsize=(10,8))
 
-    plot_cit_dis_with_power_law(_2000_pid_citnum,ax,c='b',label='year 2000')
-    plot_cit_dis_with_power_law(_2005_pid_citnum,ax,c='r',label='year 2005')
-    plot_cit_dis_with_power_law(_2010_pid_citnum,ax,c='g',label='year 2010')
+    plot_cit_dis_with_power_law(_2000_pid_citnum,ax,c='b',label='year 1960')
+    plot_cit_dis_with_power_law(_2005_pid_citnum,ax,c='r',label='year 1980')
+    plot_cit_dis_with_power_law(_2010_pid_citnum,ax,c='g',label='year 2000')
 
     ax.legend()
 
@@ -521,7 +521,7 @@ def plot_cit_dis_with_power_law(pid_citnum,ax,c,label):
 
     values = pid_citnum.values()
 
-    fit=powerlaw.Fit(values,xmin=(1,50))
+    fit=powerlaw.Fit(values,xmin=(1,500))
 
     fit.plot_pdf(c=c,linewidth=2,ax=ax,label=label)
     fit.power_law.plot_pdf(c=c,linewidth=2,ax=ax,linestyle='--')
