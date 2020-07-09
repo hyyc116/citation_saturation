@@ -152,7 +152,7 @@ def plot_diversity_figs():
 
 
     ax = axes[0,0]
-    for i,subj in enumerate(subj_type_xys.keys()):
+    for i,subj in enumerate(sorted(subj_type_xys.keys())):
 
         xs = subj_type_xys[subj]['xs']
         top20_percents = subj_type_xys[subj]['top20']
@@ -172,7 +172,7 @@ def plot_diversity_figs():
 
 
     ax = axes[0,1]
-    for i,subj in enumerate(subj_type_xys.keys()):
+    for i,subj in enumerate(sorted(subj_type_xys.keys())):
 
         xs = subj_type_xys[subj]['xs']
         divs = subj_type_xys[subj]['div']
@@ -192,7 +192,7 @@ def plot_diversity_figs():
 
 
     ax = axes[1,0]
-    for i,subj in enumerate(subj_type_xys.keys()):
+    for i,subj in enumerate(sorted(subj_type_xys.keys())):
 
         xs = subj_type_xys[subj]['xs']
         divs = subj_type_xys[subj]['ny_top20']
@@ -200,7 +200,7 @@ def plot_diversity_figs():
         ax.plot(xs,divs,label='{}'.format(subj))
 
 
-    ax.set_title('top 20% citaation percentage over next year')
+    ax.set_title('top 20% citation percentage over next year')
 
     ax.set_xlabel('year')
 
@@ -210,7 +210,7 @@ def plot_diversity_figs():
 
 
     ax = axes[1,1]
-    for i,subj in enumerate(subj_type_xys.keys()):
+    for i,subj in enumerate(sorted(subj_type_xys.keys())):
 
         xs = subj_type_xys[subj]['xs']
         divs = subj_type_xys[subj]['powlaw']
@@ -408,7 +408,7 @@ def field_year_zero_percentage():
 
     subj_xys = {}
 
-    for subj in subj_year_num.keys():
+    for subj in sorted(subj_year_num.keys()):
 
         xs = []
         ys = []
@@ -433,18 +433,131 @@ def field_year_zero_percentage():
     logging.info('data saved to data/subj_num_zero_percents.json')
 
 
+def plot_zero_percents():
+
+    subj_xys = json.loads(open('subj_num_zero_percents.json').read())
+
+    plt.figure(figsize=(8,6))
+
+    for subj in sorted(subj_xys.keys()):
+
+        xs,ys,zs,subj_total = subj_xys[subj]
+
+        plt.plot(xs,ys,label=subj)
+
+    plt.xlabel('year')
+    plt.ylabel('number of papers')
+    plt.yscale('log')
+
+    plt.legend()
+
+    plt.savefig('subj_year_num.png',dpi=400)
+
+    plt.figure(figsize=(8,6))
+
+    for subj in sorted(subj_xys.keys()):
+
+        xs,ys,zs,subj_total = subj_xys[subj]
+
+        plt.plot(xs,zs,label=subj)
+
+    plt.xlabel('year')
+
+    plt.ylabel('zero cited papers percentage')
+
+    plt.ylim(0,1)
+
+    plt.legend(fontsize=6)
+
+    plt.savefig('subj_zero_percents.png',dpi=400)
+
+
+
+def plot_citation_of_subj():
+
+    logging.info('loading data...')
+
+    topsubj_year_pid_citnum = json.loads(open('data/topsubj_year_pid_citnum.json').read())
+
+
+    logging.info('data loading done.')
+    ###Physical Sciences
+
+    ## year  2000 2005 2010
+
+    _2000_pid_citnum = topsubj_year_pid_citnum['Physical Sciences']['2000']
+
+    _2005_pid_citnum = topsubj_year_pid_citnum['Physical Sciences']['2000']
+
+    _2005_pid_citnum = topsubj_year_pid_citnum['Physical Sciences']['2000']
+
+    fig,ax = plt.subplots(figsize=(10,8))
+
+    plot_cit_dis_with_power_law(_2000_pid_citnum,ax,c='b',label='year 2000')
+    plot_cit_dis_with_power_law(_2005_pid_citnum,ax,c='r',label='year 2005')
+    plot_cit_dis_with_power_law(_2010_pid_citnum,ax,c='g',label='year 2010')
+
+    ax.legend()
+
+    ax.set_xlabel('number of citations')
+
+    ax.set_ylabel('P(x)')
+
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+
+    plt.tight_layout()
+
+    plt.savefig('fig/Physical_cd.png',dpi=400)
+
+    logging.info('fig saved to fig/Physical_cd.png.')
+
+
+
+
+
+
+def plot_cit_dis_with_power_law(pid_citnum,ax,c,label):
+
+    values = pid_citnum.keys()
+
+    # v_counter = Counter(values)
+
+    # xs = []
+    # ys = []
+    # for cn in sorted(v_counter.keys()):
+    #     xs.append(int(cn))
+    #     ys.append(v_counter[cn])
+
+    # ys = 
+
+    fit = powerlaw.Fit(data)
+
+    fit.plot_pdf(c=c,linewidth = 2,ax=ax,label=label)
+    fit.power_law.plot_pdf(c=c,linewidth=2,ax=ax,linestyle='--')
+
+
+
+
+
+
 if __name__ == '__main__':
     # stat_subj_paper_year_citnum()
 
     # top20_percent_trend_over_time()
 
-    field_year_zero_percentage()
+    # field_year_zero_percentage()
 
 
-    # plot_diversity_figs()
 
     # test_powlaw()
 
+    # plot_diversity_figs()
+
+
+    # plot_zero_percents()
+
+    plot_citation_of_subj()
 
 
 

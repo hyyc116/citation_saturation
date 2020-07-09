@@ -419,6 +419,8 @@ def paper_year_total_citnum(year_citnum):
 
 
 
+
+
 if __name__ == '__main__':
 
     ##需要研究的领域的论文id
