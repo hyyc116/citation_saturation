@@ -404,7 +404,7 @@ def field_year_zero_percentage():
 
     # subj_year = defaultdict(dict)
 
-    subj_xys = []
+    subj_xys = {}
 
     for subj in subj_year_num.keys():
 
