@@ -360,11 +360,83 @@ def test_powlaw():
     plt.savefig('test.png')
 
 
+def field_year_zero_percentage():
+
+    subj_paper_year_citnum = json.loads(open('data/topsubj_paper_year_citnum.json').read())
+
+    paper_year = json.loads(open('../cascade_temporal_analysis/data/pubyear_ALL.json').read())
+
+    pid_topsubjs = json.loads(open('../cascade_temporal_analysis/data/_ids_top_subjects.json').read())
+
+
+    subj_year_m1 = defaultdict(lambda:defaultdict(int))
+    for subj in subj_paper_year_citnum.keys():
+        for paper in subj_paper_year_citnum[subj].keys():
+
+            year = int(paper_year[paper])
+
+            subj_year_m1[subj][year]+=1
+
+    subj_year_num = defaultdict(lambda:defaultdict(int))
+
+
+    total_num = 0
+    for paper in paper_year.keys():
+
+        year = int(paper_year[paper])
+
+        if int(year)<1950 or int(year)>2016:
+            continue
+
+        topsubjs = pid_topsubjs.get(paper,None)
+
+        if topsubjs is None:
+            continue
+
+
+        total_num+=1
+
+        for topsubj in topsubjs:
+
+            subj_year_num[topsubj][year]+=1
+
+
+
+    # subj_year = defaultdict(dict)
+
+    subj_xys = []
+
+    for subj in subj_year_num.keys():
+
+        xs = []
+        ys = []
+        zs = []
+        for year in subj_year_num[subj].keys():
+
+            if year<1950 and year>2016:
+                continue
+
+            xs.append(year)
+            ys.append(subj_year_num[subj][year])
+            zs.append((subj_year_num[subj][year]-subj_year_m1[subj][year])/float(subj_year_num[subj][year]))
+
+        subj_total = np.sum(ys)
+
+        logging.info('==={}:{}'.format(subj,subj_total))
+
+        subj_xys[subj] = [xs,ys,zs,subj_total]
+
+    open('data/subj_num_zero_percents.json','w').write(json.dumps(subj_xys))
+
+    logging.info('data saved to data/subj_num_zero_percents.json')
+
 
 if __name__ == '__main__':
     # stat_subj_paper_year_citnum()
 
     top20_percent_trend_over_time()
+
+    field_year_zero_percentage()
 
 
     # plot_diversity_figs()
