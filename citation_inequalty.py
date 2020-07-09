@@ -525,11 +525,11 @@ def plot_cit_dis_with_power_law(pid_citnum,ax,c,label):
     xs = []
     ys = []
     for v in sorted(v_counter.keys()):
-        xs.append(v)
+        xs.append(int(v))
         ys.append(v_counter[v])
 
 
-    ys = [ys[i:] for i in range(len(ys))]
+    ys = [np.sum(ys[i:]) for i in range(len(ys))]
 
     ys = np.array(ys)/float(np.sum(ys))
 
