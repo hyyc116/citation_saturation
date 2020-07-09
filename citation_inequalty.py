@@ -491,7 +491,7 @@ def plot_citation_of_subj():
 
     _2010_pid_citnum = topsubj_year_pid_citnum['Physical Sciences']['2000']
 
-    fig,ax = plt.subplots(figsize=(10,8))
+    fig,ax = plt.subplots(figsize=(4,3))
 
     plot_cit_dis_with_power_law(_2000_pid_citnum,ax,c='b',label='year 1960')
     plot_cit_dis_with_power_law(_2005_pid_citnum,ax,c='r',label='year 1980')
