@@ -400,6 +400,8 @@ def field_year_zero_percentage():
 
             subj_year_num[topsubj][year]+=1
 
+    logging.info('total num:{}'.format(total_num))
+
 
 
     # subj_year = defaultdict(dict)
