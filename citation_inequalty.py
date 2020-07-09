@@ -519,7 +519,7 @@ def plot_citation_of_subj():
 
 def plot_cit_dis_with_power_law(pid_citnum,ax,c,label):
 
-    values = pid_citnum.keys()
+    values = pid_citnum.values()
 
     fit=powerlaw.Fit(values,xmin=(1,50))
 
