@@ -487,9 +487,9 @@ def plot_citation_of_subj():
 
     _2000_pid_citnum = topsubj_year_pid_citnum['Physical Sciences']['2000']
 
-    _2005_pid_citnum = topsubj_year_pid_citnum['Physical Sciences']['2000']
+    _2005_pid_citnum = topsubj_year_pid_citnum['Physical Sciences']['2005']
 
-    _2005_pid_citnum = topsubj_year_pid_citnum['Physical Sciences']['2000']
+    _2010_pid_citnum = topsubj_year_pid_citnum['Physical Sciences']['2010']
 
     fig,ax = plt.subplots(figsize=(10,8))
 
