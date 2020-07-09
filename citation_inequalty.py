@@ -147,7 +147,7 @@ def plot_diversity_figs():
 
     subj_type_xys = json.loads(open('subj_type_xys.json').read())
 
-    fig,axes = plt.subplots(2,2,figsize=(17,12))
+    fig,axes = plt.subplots(2,2,figsize=(15,12))
 
 
 
@@ -167,6 +167,8 @@ def plot_diversity_figs():
 
     ax.set_ylabel('percentage')
 
+    ax.legend(fontsize=10)
+
 
 
     ax = axes[0,1]
@@ -185,13 +187,15 @@ def plot_diversity_figs():
     ax.set_ylabel('diversity')
 
     # lgd2 = ax.legend()
-    lgd1 = ax.legend(loc=7,bbox_to_anchor=(1.5, 0.5), ncol=1,fontsize=10)
+    # lgd1 = ax.legend(loc=7,bbox_to_anchor=(1.5, 0.5), ncol=1,fontsize=10)
+    ax.legend(fontsize=10)
+
 
     ax = axes[1,0]
     for i,subj in enumerate(subj_type_xys.keys()):
 
         xs = subj_type_xys[subj]['xs']
-        divs = subj_type_xys[subj]['top20']
+        divs = subj_type_xys[subj]['ny_top20']
 
         ax.plot(xs,divs,label='{}'.format(subj))
 
@@ -201,6 +205,8 @@ def plot_diversity_figs():
     ax.set_xlabel('year')
 
     ax.set_ylabel('percentage')
+    ax.legend(fontsize=10)
+
 
 
     ax = axes[1,1]
@@ -218,11 +224,16 @@ def plot_diversity_figs():
 
     ax.set_ylabel('$\\alpha$')
 
+    ax.set_ylim(1.9,4.1)
+
+    ax.legend(fontsize=10)
+
+
 
 
     plt.tight_layout()
 
-    plt.savefig('me.png',dpi=400,additional_artists=[lgd1],bbox_inches="tight")
+    plt.savefig('me.png',dpi=400)
 
 
             
@@ -269,7 +280,7 @@ def powlaw_of_total(pid_citnum):
 
     values = pid_citnum.values()
 
-    results=powerlaw.Fit(values,xmin=10)
+    results=powerlaw.Fit(values,xmin=(1,10))
 
     return results.power_law.alpha
 
@@ -326,6 +337,30 @@ def diversity_of_equal_percentile(pid_citnum,N):
     return percents,diversity
 
 
+def test_powlaw():
+
+    xs = range(1,10000)
+
+    ys = [x**(-3) for x in xs]
+
+    ys2 = [x**(-4) for x in xs]
+
+    plt.figure(figsize=(8,6))
+
+    plt.plot(xs,ys,label='$y=x^{-3}$')
+    plt.plot(xs,ys2,label='$y=x^{-4}$')
+
+    plt.xscale('log')
+    plt.yscale('log')
+
+    plt.legend()
+
+    plt.tight_layout()
+
+    plt.savefig('test.png')
+
+
+
 if __name__ == '__main__':
     # stat_subj_paper_year_citnum()
 
@@ -333,6 +368,8 @@ if __name__ == '__main__':
 
 
     # plot_diversity_figs()
+
+    # test_powlaw()
 
 
 
