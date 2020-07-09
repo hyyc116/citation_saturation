@@ -521,17 +521,7 @@ def plot_cit_dis_with_power_law(pid_citnum,ax,c,label):
 
     values = pid_citnum.keys()
 
-    # v_counter = Counter(values)
-
-    # xs = []
-    # ys = []
-    # for cn in sorted(v_counter.keys()):
-    #     xs.append(int(cn))
-    #     ys.append(v_counter[cn])
-
-    # ys = 
-
-    fit = powerlaw.Fit(data)
+    fit=powerlaw.Fit(values,xmin=(1,50))
 
     fit.plot_pdf(c=c,linewidth = 2,ax=ax,label=label)
     fit.power_law.plot_pdf(c=c,linewidth=2,ax=ax,linestyle='--')
