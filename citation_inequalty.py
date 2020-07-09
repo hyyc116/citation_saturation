@@ -520,11 +520,25 @@ def plot_citation_of_subj():
 def plot_cit_dis_with_power_law(pid_citnum,ax,c,label):
 
     values = pid_citnum.values()
+    v_counter = Counter(values)
 
-    fit=powerlaw.Fit(values,xmin=(1,500))
+    xs = []
+    ys = []
+    for v in sorted(v_counter.keys()):
+        xs.append(v)
+        ys.append(v_counter[v])
 
-    fit.plot_pdf(c=c,linewidth=2,ax=ax,label=label)
-    fit.power_law.plot_pdf(c=c,linewidth=2,ax=ax,linestyle='--')
+
+    ys = [ys[i:] for i in range(len(ys))]
+
+    ys = np.array(ys)/float(np.sum(ys))
+
+    ax.plot(xs,ys,label=label,c=c)
+
+    # fit=powerlaw.Fit(values,xmin=(1,500))
+
+    # fit.plot_pdf(c=c,linewidth=2,ax=ax,label=label)
+    # fit.power_law.plot_pdf(c=c,linewidth=2,ax=ax,linestyle='--')
 
 
 
