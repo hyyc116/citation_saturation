@@ -147,11 +147,8 @@ def plot_diversity_figs():
 
     subj_type_xys = json.loads(open('subj_type_xys.json').read())
 
-    fig,axes = plt.subplots(2,2,figsize=(15,12))
+    fig,ax = plt.subplots(figsize=(7,5))
 
-
-
-    ax = axes[0,0]
     for i,subj in enumerate(sorted(subj_type_xys.keys())):
 
         xs = subj_type_xys[subj]['xs']
@@ -169,9 +166,12 @@ def plot_diversity_figs():
 
     ax.legend(fontsize=10)
 
+    plt.tight_layout()
+
+    plt.savefig('me1.png',dpi=800)
 
 
-    ax = axes[0,1]
+    fig,ax = plt.subplots(figsize=(7,5))
     for i,subj in enumerate(sorted(subj_type_xys.keys())):
 
         xs = subj_type_xys[subj]['xs']
@@ -191,7 +191,12 @@ def plot_diversity_figs():
     ax.legend(fontsize=10)
 
 
-    ax = axes[1,0]
+    plt.tight_layout()
+
+    plt.savefig('me2.png',dpi=800)
+
+
+    fig,ax = plt.subplots(figsize=(7,5))
     for i,subj in enumerate(sorted(subj_type_xys.keys())):
 
         xs = subj_type_xys[subj]['xs']
@@ -209,7 +214,12 @@ def plot_diversity_figs():
 
 
 
-    ax = axes[1,1]
+    plt.tight_layout()
+
+    plt.savefig('me3.png',dpi=800)
+
+
+    fig,ax = plt.subplots(figsize=(7,5))
     for i,subj in enumerate(sorted(subj_type_xys.keys())):
 
         xs = subj_type_xys[subj]['xs']
@@ -233,7 +243,7 @@ def plot_diversity_figs():
 
     plt.tight_layout()
 
-    plt.savefig('me.png',dpi=400)
+    plt.savefig('me4.png',dpi=800)
 
 
             
@@ -437,7 +447,7 @@ def plot_zero_percents():
 
     subj_xys = json.loads(open('subj_num_zero_percents.json').read())
 
-    plt.figure(figsize=(8,6))
+    plt.figure(figsize=(7,5))
 
     for subj in sorted(subj_xys.keys()):
 
@@ -451,9 +461,9 @@ def plot_zero_percents():
 
     plt.legend()
 
-    plt.savefig('subj_year_num.png',dpi=400)
+    plt.savefig('subj_year_num.png',dpi=800)
 
-    plt.figure(figsize=(8,6))
+    plt.figure(figsize=(7,5))
 
     for subj in sorted(subj_xys.keys()):
 
@@ -469,7 +479,7 @@ def plot_zero_percents():
 
     plt.legend(fontsize=6)
 
-    plt.savefig('subj_zero_percents.png',dpi=400)
+    plt.savefig('subj_zero_percents.png',dpi=800)
 
 
 
@@ -556,12 +566,12 @@ if __name__ == '__main__':
 
     # test_powlaw()
 
-    # plot_diversity_figs()
+    plot_diversity_figs()
 
 
-    # plot_zero_percents()
+    plot_zero_percents()
 
-    plot_citation_of_subj()
+    # plot_citation_of_subj()
 
 
 
